@@ -28,9 +28,16 @@
     <orderEntry type="library" name="Maven: com.sun.faces:jsf-api:2.2.10" level="project" />
     <orderEntry type="library" name="Maven: com.sun.faces:jsf-impl:2.2.10" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces:primefaces:5.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.enterprise:cdi-api:1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.interceptor:jboss-interceptor-api:1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.annotation:jsr250-api:1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.inject:javax.inject:1" level="project" />
   </component>
   <component name="sonarModuleSettings">
+    <option name="alternativeWorkingDirPath" value="" />
     <option name="localAnalysisScripName" value="&lt;PROJECT&gt;" />
     <option name="serverName" value="&lt;PROJECT&gt;" />
+    <option name="useAlternativeWorkingDir" value="false" />
+    <option name="workingDirSelection" value="&lt;MODULE&gt;" />
   </component>
 </module>
