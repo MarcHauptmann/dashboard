@@ -2,7 +2,6 @@ package marc.dashboard.weather.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import marc.dashboard.weather.Main;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
@@ -42,4 +41,7 @@ public class WeatherData {
                       name, weather);
     }
 
+    public Main getMain() {
+        return main;
+    }
 }

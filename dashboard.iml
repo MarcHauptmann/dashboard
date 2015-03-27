@@ -57,6 +57,10 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.4.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.4.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.4.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="JBoss 8.2.0.Final - RESTful Web Service" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="JBoss 8.2.0.Final - CDI: Contexts and Dependency Injection" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="JBoss 8.2.0.Final - JSF" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="JBoss 8.2.0.Final - JSON Processing (JSR 353)" level="application_server_libraries" />
   </component>
   <component name="sonarModuleSettings">
     <option name="alternativeWorkingDirPath" value="" />
