@@ -47,6 +47,18 @@
             <version>1.0</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>3.0.10.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxb-provider</artifactId>
+            <version>3.0.10.Final</version>
+           </dependency>
     </dependencies>
 
     <build>
