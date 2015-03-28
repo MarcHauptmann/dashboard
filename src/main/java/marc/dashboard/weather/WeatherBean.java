@@ -1,5 +1,6 @@
 package marc.dashboard.weather;
 
+import marc.dashboard.config.Configuration;
 import marc.dashboard.weather.api.OpenWeatherApi;
 import marc.dashboard.weather.api.WeatherData;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -8,11 +9,15 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
 
 @ManagedBean
 @RequestScoped
 public class WeatherBean {
     public static final double KELVIN_DIFFERENCE = 273.15;
+
+    @Inject
+    Configuration configuration;
 
     private WeatherData weatherData;
 
@@ -24,7 +29,7 @@ public class WeatherBean {
 
             OpenWeatherApi api = target.proxy(OpenWeatherApi.class);
 
-            weatherData = api.getWeather("Hannover");
+            weatherData = api.getWeather(configuration.getPlace());
         }
 
         return weatherData;

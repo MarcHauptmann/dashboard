@@ -11,13 +11,18 @@
     </listener>
 
     <welcome-file-list>
-        <welcome-file>hello.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
 
     <servlet>
         <servlet-name>faces</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     </servlet>
+
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>bootstrap</param-value>
+    </context-param>
 
     <servlet-mapping>
         <servlet-name>faces</servlet-name>
