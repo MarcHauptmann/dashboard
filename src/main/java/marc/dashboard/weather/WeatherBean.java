@@ -7,11 +7,11 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
-@ManagedBean
+@Named
 @RequestScoped
 public class WeatherBean {
     public static final double KELVIN_DIFFERENCE = 273.15;
@@ -19,18 +19,16 @@ public class WeatherBean {
     @Inject
     Configuration configuration;
 
-    private WeatherData weatherData;
-
     private WeatherData loadWeather() {
-        if (weatherData == null) {
-            ResteasyClient resteasyClient = new ResteasyClientBuilder().build();
+        ResteasyClient resteasyClient = new ResteasyClientBuilder().build();
 
-            ResteasyWebTarget target = resteasyClient.target("http://api.openweathermap.org/data/2.5");
+        ResteasyWebTarget target = resteasyClient.target("http://api.openweathermap.org/data/2.5");
 
-            OpenWeatherApi api = target.proxy(OpenWeatherApi.class);
+        OpenWeatherApi api = target.proxy(OpenWeatherApi.class);
 
-            weatherData = api.getWeather(configuration.getPlace());
-        }
+        WeatherData weatherData = api.getWeather(configuration.getPlace());
+
+        resteasyClient.close();
 
         return weatherData;
     }

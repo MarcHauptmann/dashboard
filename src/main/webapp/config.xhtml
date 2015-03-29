@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head> </h:head>
+<h:body>
+    <p:panel header="Einstellungen">
+        <h:form>
+            <p:growl id="growl" />
+
+            <p:panelGrid>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="Stadt: " for="placeField" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="placeField" value="#{configurationView.place}" />
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="Stationen: " for="stationsList" />
+                    </p:column>
+                    <p:column>
+                        <p:dialog header="Neue Station anlegen" modal="true" widgetVar="dlg">
+                            <p:outputLabel value="Stationsname" />
+                            <p:inputText value="#{configurationView.newStation}" />
+
+                            <p:commandButton value="Anlegen" actionListener="#{configurationView.addStation}"
+                                             update="stationsList" oncomplete="PF('dlg').hide()"/>
+                        </p:dialog>
+
+                        <p:selectOneListbox id="stationsList" style="width: 20em"
+                                            value="#{configurationView.selectedStation}">
+                            <f:selectItems value="#{configurationView.stations}" var="station"
+                                           itemLabel="#{station}" itemValue="#{station}" />
+                        </p:selectOneListbox>
+
+                        <p:commandButton value="Neu" onclick="PF('dlg').show()" icon="ui-icon-circle-plus"/>
+
+                        <p:commandButton value="Löschen" actionListener="#{configurationView.removeStation()}"
+                                         icon="ui-icon-circle-minus" update="stationsList"/>
+                        <p:commandButton icon="ui-icon-triangle-1-n" disabled="true"/>
+                        <p:commandButton icon="ui-icon-triangle-1-s" disabled="true"/>
+
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+            <p:separator />
+
+            <p:commandButton value="Speichern" actionListener="#{configurationView.save}"
+                             update="growl" icon="ui-icon-check" />
+        </h:form>
+    </p:panel>
+</h:body>
+</html>

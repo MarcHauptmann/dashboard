@@ -15,7 +15,7 @@
                     <p:clock pattern="dd.MM.yyyy HH:mm:ss" />
                 </p:layoutUnit>
 
-                <p:layoutUnit position="center" header="Wetter">
+                <p:layoutUnit position="center" header="Wetter in #{configurationBean.place}">
                     <p:panelGrid columns="2">
                         <h:outputLabel value="Temperatur:" />
 
@@ -28,7 +28,10 @@
         </p:layoutUnit>
 
         <p:layoutUnit position="center" size="700" header="Bus und Bahn">
-            Bla bla bla
+            <h:outputLabel for="stationList" value="Stationen: "/>
+            <p:dataList id="stationList" value="#{configurationBean.stations}" var="station">
+                #{station}
+            </p:dataList>
         </p:layoutUnit>
 
     </p:layout>
