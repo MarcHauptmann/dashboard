@@ -15,7 +15,7 @@
                     <p:clock pattern="dd.MM.yyyy HH:mm:ss" />
                 </p:layoutUnit>
 
-                <p:layoutUnit position="center" header="Wetter in #{defaultConfiguration.place}">
+                <p:layoutUnit position="center" header="Wetter">
                     <p:panelGrid columns="2">
                         <h:outputLabel value="Temperatur:" />
 
@@ -29,7 +29,7 @@
 
         <p:layoutUnit position="center" size="700" header="Bus und Bahn">
             <h:outputLabel for="stationList" value="Stationen: "/>
-            <p:dataList id="stationList" value="#{defaultConfiguration.stations}" var="station">
+            <p:dataList id="stationList" value="#{efaView.stations}" var="station">
                 #{station}
             </p:dataList>
         </p:layoutUnit>
