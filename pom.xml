@@ -5,6 +5,10 @@
     <artifactId>dashboard</artifactId>
     <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <spock.version>0.7-groovy-2.0</spock.version>
+        <resteasy.version>3.0.10.Final</resteasy.version>
+    </properties>
     <name>dashboard Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
@@ -64,20 +68,27 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
-            <version>3.0.10.Final</version>
+            <version>${resteasy.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxb-provider</artifactId>
-            <version>3.0.10.Final</version>
+            <version>${resteasy.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson2-provider</artifactId>
-            <version>3.0.10.Final</version>
+            <version>${resteasy.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>${spock.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -99,6 +110,18 @@
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.0.2.Final</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-maven</artifactId>
+                <version>${spock.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.5</version>
             </plugin>
         </plugins>
     </build>

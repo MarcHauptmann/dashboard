@@ -34,6 +34,6 @@ public class WeatherBean {
     }
 
     public double getTemperatureInCelsius() {
-        return loadWeather().getMain().getTemp() - KELVIN_DIFFERENCE;
+        return 5; //loadWeather().getMain().getTemp() - KELVIN_DIFFERENCE;
     }
 }

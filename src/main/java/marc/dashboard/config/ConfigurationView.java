@@ -1,50 +1,66 @@
 package marc.dashboard.config;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Named
 @ViewScoped
 public class ConfigurationView implements Serializable {
-    private List<String> stations;
-    private String       selectedStation;
-    private String       place;
-
     private ConfigurationBean configurationBean;
-    private String            newStation;
 
-    public ConfigurationView() {
-    }
+    private String selectedStation;
+    private String newStation;
 
     @Inject
-    public ConfigurationView(ConfigurationBean configurationBean) {
-        this.configurationBean = configurationBean;
+    private DefaultConfiguration configuration;
 
-        this.place = configurationBean.getPlace();
-        this.stations = new ArrayList<>(configurationBean.getStations());
+    @Inject
+    private MessagePublisher messagePublisher;
+
+    public ConfigurationView() {
+        this.configurationBean = new ConfigurationBean();
     }
 
-    public void addStation() {
-        this.stations.add(newStation);
+    @PostConstruct
+    public void initialize() {
+        System.out.println("initialisiere");
+
+        this.configurationBean = configuration.getConfigurationBean();
+
+        clearSelectedStation();
+        clearNewStation();
     }
 
-    public void removeStation() {
-        this.stations.remove(this.selectedStation);
+    public void addNewStation(String newStation) {
+        this.configurationBean.addStation(newStation);
+
+    }
+
+    public void removeStation(String selectedStation) {
+        this.configurationBean.removeStation(selectedStation);
+
+        clearSelectedStation();
+    }
+
+    private void clearSelectedStation() {
+        this.selectedStation = null;
     }
 
     public void save() {
-        configurationBean.setPlace(place);
-        configurationBean.setStations(stations);
+        this.configuration.setConfigurationBean(configurationBean.clone());
 
-        FacesContext facesContext = FacesContext.getCurrentInstance();
+        messagePublisher.sendMessage("Daten wurden gespeichert");
+    }
 
-        facesContext.addMessage(null, new FacesMessage("Daten wurden gespeichert"));
+    public void clearNewStation() {
+        this.newStation = null;
+    }
+
+    public void reset() {
+        this.initialize();
     }
 
     public String getSelectedStation() {
@@ -55,27 +71,35 @@ public class ConfigurationView implements Serializable {
         this.selectedStation = selectedStation;
     }
 
-    public List<String> getStations() {
-        return stations;
-    }
-
-    public void setStations(List<String> stations) {
-        this.stations = stations;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
+    public String getNewStation() {
+        return newStation;
     }
 
     public void setNewStation(String newStation) {
         this.newStation = newStation;
     }
 
-    public String getNewStation() {
-        return newStation;
+    public ConfigurationBean getConfigurationBean() {
+        return configurationBean;
+    }
+
+    public void setConfigurationBean(ConfigurationBean configurationBean) {
+        this.configurationBean = configurationBean;
+    }
+
+    public DefaultConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(DefaultConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
+    public MessagePublisher getMessagePublisher() {
+        return messagePublisher;
+    }
+
+    public void setMessagePublisher(MessagePublisher messagePublisher) {
+        this.messagePublisher = messagePublisher;
     }
 }

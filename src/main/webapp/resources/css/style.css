@@ -1,0 +1,11 @@
+.right {
+    text-align: right;
+}
+
+.fill {
+    width: 100%;
+}
+
+.noBorder td, .noBorder tr {
+    border: none !important;
+}
