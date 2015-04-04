@@ -11,7 +11,8 @@ import java.util.List;
 import static java.lang.String.format;
 
 @XmlRootElement
-@JsonIgnoreProperties (value = {"rain", "clouds", "dt", "id", "cod"})
+//@JsonIgnoreProperties (value = {"rain", "clouds", "dt", "id", "cod"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherData {
     @XmlElement (name = "name")
     String name;
@@ -23,7 +24,6 @@ public class WeatherData {
     Sys sys;
 
     @XmlElementRef (name = "weather")
-    @JsonDeserialize (contentUsing = WeatherDeserializer.class)
     List<WeatherCondition> weather;
 
     @XmlElement (name = "base")
@@ -43,5 +43,13 @@ public class WeatherData {
 
     public Main getMain() {
         return main;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<WeatherCondition> getWeather() {
+        return weather;
     }
 }

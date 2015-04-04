@@ -7,27 +7,43 @@
       xmlns:p="http://primefaces.org/ui">
 <h:head> </h:head>
 <h:body>
+    <h:outputStylesheet library="css" name="style.css"/>
+
     <p:layout fullPage="true">
-        <p:layoutUnit position="west" size="300">
+        <p:layoutUnit position="west" size="400">
 
             <p:layout>
                 <p:layoutUnit position="north" size="100" header="Datum und Uhrzeit" style="text-align: center">
-                    <p:clock pattern="dd.MM.yyyy HH:mm:ss" />
+                    <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="center" header="Wetter">
-                    <p:panelGrid columns="2">
-                        <h:outputLabel value="Temperatur:" />
-
-                        <h:outputText value="#{weatherBean.temperatureInCelsius}">
-                            <f:convertNumber pattern="#°C" />
-                        </h:outputText>
+                <p:layoutUnit position="center" header="Wetter in #{weatherBean.locationName}">
+                    <h5>Aktuell</h5>
+                    <p:panelGrid styleClass="noBorder" style="width: 100%">
+                        <p:row>
+                            <p:column>
+                                <h:graphicImage url="#{weatherBean.iconUrl}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{weatherBean.temperatureInCelsius}">
+                                    <f:convertNumber pattern="#°C"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <h:outputText value="#{weatherBean.conditionString}"/>
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
+
+                    <h5>Vorhersage</h5>
+                    <p:chart type="line" model="#{weatherBean.forecastModel}"/>
                 </p:layoutUnit>
             </p:layout>
         </p:layoutUnit>
 
-        <p:layoutUnit position="center" size="700" header="Bus und Bahn">
+        <p:layoutUnit position="center" size="400" header="Bus und Bahn">
             <h:outputLabel for="stationList" value="Stationen: "/>
             <p:dataList id="stationList" value="#{efaView.stations}" var="station">
                 #{station}

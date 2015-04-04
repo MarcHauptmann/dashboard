@@ -1,7 +1,10 @@
 package marc.dashboard.weather.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.xml.bind.annotation.XmlElement;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Main {
     @XmlElement (name = "temp")
     double temp;
