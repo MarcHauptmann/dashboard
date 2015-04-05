@@ -52,4 +52,8 @@ public class WeatherData {
     public List<WeatherCondition> getWeather() {
         return weather;
     }
+
+    public Wind getWind() {
+        return wind;
+    }
 }

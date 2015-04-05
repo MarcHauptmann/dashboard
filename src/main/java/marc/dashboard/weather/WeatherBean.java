@@ -13,8 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -52,6 +51,18 @@ public class WeatherBean {
         return weatherData.getMain().getTemp() - KELVIN_DIFFERENCE;
     }
 
+    public double getPressure() {
+        return weatherData.getMain().getPressure();
+    }
+
+    public double getHumidity() {
+        return weatherData.getMain().getHumidity() / 100.;
+    }
+
+    public Wind getWind() {
+        return weatherData.getWind();
+    }
+
     public String getLocationName() {
         return weatherData.getName();
     }
@@ -66,6 +77,37 @@ public class WeatherBean {
         return getWeather()
                 .map(weatherCondition -> weatherCondition.getIconUrlString())
                 .orElse("");
+    }
+
+    public String getIcon() {
+        String iconName = getWeather().map(weatherCondition -> weatherCondition.getIcon()).orElse("?");
+
+        Map<String, String> translation = new HashMap<>();
+        translation.put("01d", "sunny");
+        translation.put("01n", "sunny_night");
+        translation.put("02d", "cloudy1");
+        translation.put("02n", "cloudy1_night");
+        translation.put("03d", "cloudy3");
+        translation.put("03n", "cloudy3_night");
+        translation.put("04d", "cloudy4");
+        translation.put("04n", "cloudy4_night");
+        translation.put("09d", "shower1");
+        translation.put("09n", "shower1_night");
+        translation.put("10d", "shower2");
+        translation.put("10n", "shower2_night");
+        translation.put("11d", "tstorm2");
+        translation.put("11n", "tstorm2_night");
+        translation.put("13d", "snow3");
+        translation.put("13n", "snow3_night");
+        translation.put("50d", "fog");
+        translation.put("50n", "fog_night");
+
+        String returnValue = translation.get(iconName);
+
+        if (returnValue == null) {
+            return "dunno";
+        } else
+            return returnValue;
     }
 
     private Optional<WeatherCondition> getWeather() {

@@ -11,4 +11,16 @@ public class Wind {
 
         @XmlElement (name = "deg")
         int deg;
+
+        public double getSpeed() {
+                return speed;
+        }
+
+        public double getGust() {
+                return gust;
+        }
+
+        public int getDeg() {
+                return deg;
+        }
 }
