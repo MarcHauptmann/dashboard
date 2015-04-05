@@ -10,7 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -51,33 +51,31 @@ public class EfaFetcher {
     public List<Departure> getStationDepartures(int stationId) {
         InputStream inputStream = efaService.getDepartures(new DepartureQuery(stationId));
 
-        JAXBContext context = null;
-
         try {
-            context = newInstance(DepartureResponse.class);
+            JAXBContext context = newInstance(DepartureResponse.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
             DepartureResponse departureResponse = (DepartureResponse) unmarshaller.unmarshal(inputStream);
 
             return departureResponse.getDepartureInfo().getDepartures().stream()
-                    .map(EfaFetcher::getStationDeparture)
+                    .map((dep) -> getStationDeparture(departureResponse.getDepartureInfo().getDateTime(), dep))
                     .collect(toList());
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static Departure getStationDeparture(marc.dashboard.efa.api.Departure dep) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, dep.getDateTime().getDate().getYear());
-        calendar.set(Calendar.MONTH, dep.getDateTime().getDate().getMonth());
-        calendar.set(Calendar.DAY_OF_MONTH, dep.getDateTime().getDate().getDay());
-        calendar.set(Calendar.HOUR_OF_DAY, dep.getDateTime().getTime().getHour());
-        calendar.set(Calendar.MINUTE, dep.getDateTime().getTime().getMinute());
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+    private Departure getStationDeparture(DateTime dateTime, marc.dashboard.efa.api.Departure dep) {
+        Date plannedDepartureTime = dep.getDateTime().getDate();
+        Date now = dateTime.getDate();
 
-        return new Departure(dep.getServingLine().getNumber(), dep.getServingLine().getDirection(), calendar.getTime(), dep.getCountdown(), dep.getStationName());
+        Date realtimeDate = dep.getRealtimeDateTime().getDate();
+
+        long delayMs = realtimeDate.getTime() - plannedDepartureTime.getTime();
+        int delay = (int) Math.ceil(delayMs / 60000.);
+
+        return new Departure(dep.getServingLine().getNumber(), dep.getServingLine().getDirection(),
+                realtimeDate, dep.getCountdown(), dep.getStationName(), delay);
     }
 
     private EfaService createEfaService() {

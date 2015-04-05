@@ -15,8 +15,10 @@ public class DepartureQuery {
     @QueryParam("type_dm")
     String type_dm = "stopID";
 
-    public DepartureQuery(long stationId) {
+    @QueryParam("useRealtime")
+    int realtime = 1;
 
+    public DepartureQuery(long stationId) {
         this.stationId = stationId;
     }
 }

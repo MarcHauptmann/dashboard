@@ -10,6 +10,10 @@
     border: none !important;
 }
 
+.countdownDisplay td {
+    padding: 0 !important;
+}
+
 .departureTime {
     margin: 0;
     padding: 0 !important;
@@ -19,5 +23,13 @@
 .departureCountdown {
     margin: 0;
     padding: 0 !important;
-    font-size: 90%;
+    font-size: 80%;
+}
+
+.departureDelay {
+    margin-left: 0.5em !important;
+    color: red;
+    margin: 0;
+    padding: 0 !important;
+    font-size: 80%;
 }

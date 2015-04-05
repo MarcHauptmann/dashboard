@@ -16,9 +16,10 @@
             </p:column>
             <p:column rowspan="2">
                 <h5>Abfahrten</h5>
-                <p:dataTable value="#{efaView.departures}" var="departure" rows="14">
+                <p:dataTable value="#{efaView.departures}" var="departure" rows="11">
                     <p:column headerText="Linie" style="width: 5em">
-                        <h:graphicImage library="efaIcons" name="#{departure.icon}"/>
+                        <h:graphicImage library="efaIcons" name="#{departure.icon}"
+                                        style="vertical-align: middle; margin-right: 0.3em"/>
                         <h:outputText value="#{departure.line}"/>
                     </p:column>
                     <p:column headerText="Station">
@@ -28,7 +29,7 @@
                         <h:outputText value="#{departure.direction}"/>
                     </p:column>
                     <p:column headerText="Zeit" style="width: 5em">
-                        <table>
+                        <table class="countdownDisplay">
                             <tr>
                                 <td class="departureTime">
                                     <h:outputText value="#{departure.time}">
@@ -37,9 +38,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="departureCountdown">
-                                    <h:outputText value="#{departure.countdown}">
+                                <td>
+                                    <h:outputText value="#{departure.countdown}" styleClass="departureCountdown">
                                         <f:convertNumber pattern="# min"/>
+                                    </h:outputText>
+                                </td>
+                                <td>
+                                    <h:outputText value="#{departure.delay}" rendered="#{departure.delay gt 0}"
+                                                  styleClass="departureDelay">
+                                        <f:convertNumber pattern="+#"/>
                                     </h:outputText>
                                 </td>
                             </tr>
