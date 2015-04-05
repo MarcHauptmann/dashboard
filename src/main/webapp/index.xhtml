@@ -15,15 +15,42 @@
                 <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
             </p:column>
             <p:column rowspan="2">
-                <h:outputLabel for="stationList" value="Stationen: "/>
-                <p:dataList id="stationList" value="#{efaView.stations}" var="station">
-                    #{station}
-                </p:dataList>
+                <h5>Abfahrten</h5>
+                <p:dataTable value="#{efaView.departures}" var="departure" rows="14">
+                    <p:column headerText="Linie" style="width: 5em">
+                        <h:graphicImage library="efaIcons" name="#{departure.icon}"/>
+                        <h:outputText value="#{departure.line}"/>
+                    </p:column>
+                    <p:column headerText="Station">
+                        <h:outputText value="#{departure.station}"/>
+                    </p:column>
+                    <p:column headerText="Ziel">
+                        <h:outputText value="#{departure.direction}"/>
+                    </p:column>
+                    <p:column headerText="Zeit" style="width: 5em">
+                        <table>
+                            <tr>
+                                <td class="departureTime">
+                                    <h:outputText value="#{departure.time}">
+                                        <f:convertDateTime pattern="HH:mm"/>
+                                    </h:outputText>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="departureCountdown">
+                                    <h:outputText value="#{departure.countdown}">
+                                        <f:convertNumber pattern="# min"/>
+                                    </h:outputText>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:column>
+                </p:dataTable>
             </p:column>
         </p:row>
         <p:row>
             <p:column>
-                <h5>Aktuell</h5>
+                <h5>Aktuelles Wetter</h5>
                 <p:panelGrid styleClass="noBorder">
                     <p:row>
                         <p:column rowspan="4">

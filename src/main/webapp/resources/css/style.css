@@ -9,3 +9,15 @@
 .noBorder td, .noBorder tr {
     border: none !important;
 }
+
+.departureTime {
+    margin: 0;
+    padding: 0 !important;
+    font-size: 80%;
+}
+
+.departureCountdown {
+    margin: 0;
+    padding: 0 !important;
+    font-size: 90%;
+}
