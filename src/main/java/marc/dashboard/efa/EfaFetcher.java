@@ -25,19 +25,23 @@ public class EfaFetcher {
         efaService = createEfaService();
     }
 
-    public List<Station> getStations(String city, String station) throws JAXBException {
+    public List<Station> getStations(String city, String station) {
         InputStream inputStream = efaService.findStation(new StationQuery(city, station));
 
-        JAXBContext context = newInstance(StopResponse.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
+        try {
+            JAXBContext context = newInstance(StopResponse.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
 
-        StopResponse stopResponse = (StopResponse) unmarshaller.unmarshal(inputStream);
+            StopResponse stopResponse = (StopResponse) unmarshaller.unmarshal(inputStream);
 
-        Stream<Station> stationStream = stopResponse.getFinder().getName().getOdvName().getNames().stream()
-                .filter(odvNameElement1 -> odvNameElement1.getAnyType() == Type.stop)
-                .map(odvNameElement -> new Station(odvNameElement.getId(), odvNameElement.getLocality(), odvNameElement.getObjectName()));
+            Stream<Station> stationStream = stopResponse.getFinder().getName().getOdvName().getNames().stream()
+                    .filter(odvNameElement1 -> odvNameElement1.getAnyType() == Type.stop)
+                    .map(odvNameElement -> new Station(odvNameElement.getId(), odvNameElement.getLocality(), odvNameElement.getObjectName()));
 
-        return stationStream.collect(toList());
+            return stationStream.collect(toList());
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) throws IOException, JAXBException {
@@ -48,7 +52,7 @@ public class EfaFetcher {
         efaFetcher.getStationDepartures(25000341).stream().forEach(System.out::println);
     }
 
-    public List<Departure> getStationDepartures(int stationId) {
+    public List<Departure> getStationDepartures(long stationId) {
         InputStream inputStream = efaService.getDepartures(new DepartureQuery(stationId));
 
         try {

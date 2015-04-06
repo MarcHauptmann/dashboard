@@ -1,10 +1,15 @@
 package marc.dashboard.config;
 
+import marc.dashboard.efa.EfaFetcher;
+
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Named
 @ViewScoped
@@ -34,9 +39,15 @@ public class ConfigurationView implements Serializable {
         clearNewStation();
     }
 
+    public List<String> completeStations(String query) {
+        return new EfaFetcher().getStations(configuration.getPlace(), query)
+                .stream().map(station -> station.getName()).collect(toList());
+    }
+
     public void addNewStation(String newStation) {
         this.configurationBean.addStation(newStation);
 
+        clearNewStation();
     }
 
     public void removeStation(String selectedStation) {
@@ -53,14 +64,12 @@ public class ConfigurationView implements Serializable {
         this.configuration.setConfigurationBean(configurationBean.clone());
 
         messagePublisher.sendMessage("Daten wurden gespeichert");
+
+        this.initialize();
     }
 
     public void clearNewStation() {
         this.newStation = null;
-    }
-
-    public void reset() {
-        this.initialize();
     }
 
     public String getSelectedStation() {

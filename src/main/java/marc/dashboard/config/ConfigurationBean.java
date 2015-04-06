@@ -1,12 +1,10 @@
 package marc.dashboard.config;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ConfigurationBean implements Serializable {
-    String       place    = "Hannover";
+    String place = "Hannover";
     List<String> stations = Arrays.asList("Isernhagener Str.", "Vahrenwalder Platz");
 
     public ConfigurationBean() {

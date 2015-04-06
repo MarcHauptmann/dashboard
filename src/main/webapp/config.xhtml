@@ -18,7 +18,8 @@
                         <p:outputLabel value="Stationsname: " />
                     </p:column>
                     <p:column>
-                        <p:inputText id="newStationField" value="#{configurationView.newStation}" />
+                        <p:autoComplete id="newStationField" value="#{configurationView.newStation}"
+                                        completeMethod="#{configurationView.completeStations}"/>
                     </p:column>
                 </p:row>
 

@@ -2,7 +2,7 @@ package marc.dashboard.efa;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-class Station {
+public class Station {
     long id;
     String city;
     String name;
