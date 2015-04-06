@@ -4,21 +4,21 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 
+import static java.lang.Math.max;
+
 public class Departure {
     int line;
     String direction;
     Date time;
-    int countdown;
+    Date realTime;
     String station;
-    private int delay;
 
-    public Departure(int line, String direction, Date time, int countdown, String station, int delay) {
+    public Departure(int line, String station, String direction, Date time, Date realTime) {
         this.line = line;
         this.direction = direction;
         this.time = time;
-        this.countdown = countdown;
         this.station = station;
-        this.delay = delay;
+        this.realTime = realTime;
     }
 
     @Override
@@ -38,16 +38,8 @@ public class Departure {
         this.time = time;
     }
 
-    public void setCountdown(int countdown) {
-        this.countdown = countdown;
-    }
-
     public void setStation(String station) {
         this.station = station;
-    }
-
-    public void setDelay(int delay) {
-        this.delay = delay;
     }
 
     public int getLine() {
@@ -63,11 +55,15 @@ public class Departure {
     }
 
     public int getCountdown() {
-        return countdown;
+        return getCountdown(new Date());
+    }
+
+    public int getCountdown(Date date) {
+        return max(getDifferenceInMinutes(realTime, date), 0);
     }
 
     public String getIcon() {
-        if (line <= 100)
+        if (line < 100)
             return "u_bahn.gif";
         else
             return "bus.gif";
@@ -78,6 +74,12 @@ public class Departure {
     }
 
     public int getDelay() {
-        return delay;
+        return getDifferenceInMinutes(realTime, time);
+    }
+
+    private int getDifferenceInMinutes(Date realTime, Date time) {
+        long delayMs = realTime.getTime() - time.getTime();
+
+        return (int) Math.round(delayMs / 60000.);
     }
 }

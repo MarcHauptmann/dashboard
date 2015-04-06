@@ -25,23 +25,56 @@ public class EfaFetcher {
         efaService = createEfaService();
     }
 
+    private EfaService createEfaService() {
+        ResteasyClient resteasyClient = new ResteasyClientBuilder().build();
+
+        ResteasyWebTarget target = resteasyClient.target("http://mobil.efa.de/mobile3");
+
+        return target.proxy(EfaService.class);
+    }
+
     public List<Station> getStations(String city, String station) {
         InputStream inputStream = efaService.findStation(new StationQuery(city, station));
 
+        StopResponse stopResponse = readObjectFromStream(StopResponse.class, inputStream);
+
+        Stream<Station> stationStream = stopResponse.getFinder().getName().getOdvName().getNames().stream()
+                .filter(odvNameElement1 -> odvNameElement1.getAnyType() == Type.stop)
+                .map(odvNameElement -> new Station(odvNameElement.getId(), odvNameElement.getLocality(), odvNameElement.getObjectName()));
+
+        return stationStream.collect(toList());
+    }
+
+    public List<Departure> getStationDepartures(long stationId) {
+        InputStream inputStream = efaService.getDepartures(new DepartureQuery(stationId));
+
+        DepartureResponse departureResponse = readObjectFromStream(DepartureResponse.class, inputStream);
+
+        return departureResponse.getDepartureInfo().getDepartures().stream()
+                .map((dep) -> getStationDeparture(dep))
+                .collect(toList());
+    }
+
+    private <T> T readObjectFromStream(Class<T> stopResponseClass, InputStream inputStream) {
         try {
-            JAXBContext context = newInstance(StopResponse.class);
+            JAXBContext context = newInstance(stopResponseClass);
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
-            StopResponse stopResponse = (StopResponse) unmarshaller.unmarshal(inputStream);
-
-            Stream<Station> stationStream = stopResponse.getFinder().getName().getOdvName().getNames().stream()
-                    .filter(odvNameElement1 -> odvNameElement1.getAnyType() == Type.stop)
-                    .map(odvNameElement -> new Station(odvNameElement.getId(), odvNameElement.getLocality(), odvNameElement.getObjectName()));
-
-            return stationStream.collect(toList());
+            return (T) unmarshaller.unmarshal(inputStream);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Departure getStationDeparture(marc.dashboard.efa.api.Departure dep) {
+        Date plannedDepartureTime = dep.getDateTime().getDate();
+
+        Date realtimeDate = dep.getRealtimeDateTime().getDate();
+
+
+
+        return new Departure(dep.getServingLine().getNumber(), dep.getStationName(), dep.getServingLine().getDirection(),
+                realtimeDate, plannedDepartureTime);
     }
 
     public static void main(String[] args) throws IOException, JAXBException {
@@ -50,43 +83,5 @@ public class EfaFetcher {
         efaFetcher.getStations("Hannover", "Isernhagener").stream().forEach(System.out::println);
 
         efaFetcher.getStationDepartures(25000341).stream().forEach(System.out::println);
-    }
-
-    public List<Departure> getStationDepartures(long stationId) {
-        InputStream inputStream = efaService.getDepartures(new DepartureQuery(stationId));
-
-        try {
-            JAXBContext context = newInstance(DepartureResponse.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-
-            DepartureResponse departureResponse = (DepartureResponse) unmarshaller.unmarshal(inputStream);
-
-            return departureResponse.getDepartureInfo().getDepartures().stream()
-                    .map((dep) -> getStationDeparture(departureResponse.getDepartureInfo().getDateTime(), dep))
-                    .collect(toList());
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Departure getStationDeparture(DateTime dateTime, marc.dashboard.efa.api.Departure dep) {
-        Date plannedDepartureTime = dep.getDateTime().getDate();
-        Date now = dateTime.getDate();
-
-        Date realtimeDate = dep.getRealtimeDateTime().getDate();
-
-        long delayMs = realtimeDate.getTime() - plannedDepartureTime.getTime();
-        int delay = (int) Math.ceil(delayMs / 60000.);
-
-        return new Departure(dep.getServingLine().getNumber(), dep.getServingLine().getDirection(),
-                realtimeDate, dep.getCountdown(), dep.getStationName(), delay);
-    }
-
-    private EfaService createEfaService() {
-        ResteasyClient resteasyClient = new ResteasyClientBuilder().build();
-
-        ResteasyWebTarget target = resteasyClient.target("http://mobil.efa.de/mobile3");
-
-        return target.proxy(EfaService.class);
     }
 }

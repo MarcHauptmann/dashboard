@@ -22,7 +22,7 @@ public class EfaView {
         EfaFetcher efaFetcher = new EfaFetcher();
 
         List<Long> stationIds = configuration.getStations().stream()
-                .map(name -> efaFetcher.getStations(configuration.getPlace(), name).stream().findFirst().get().getId())
+                .map(name -> getFirstStationByName(efaFetcher, name).getId())
                 .collect(toList());
 
         return stationIds.stream()
@@ -30,5 +30,9 @@ public class EfaView {
                 .flatMap(list -> list.stream())
                 .sorted((dep1, dep2) -> dep1.getTime().compareTo(dep2.getTime()))
                 .collect(toList());
+    }
+
+    private Station getFirstStationByName(EfaFetcher efaFetcher, String name) {
+        return efaFetcher.getStations(configuration.getPlace(), name).stream().findFirst().get();
     }
 }
