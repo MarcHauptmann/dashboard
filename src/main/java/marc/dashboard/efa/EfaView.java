@@ -21,7 +21,8 @@ public class EfaView {
         EfaFetcher efaFetcher = new EfaFetcher();
 
 
-        List<Departure> stationDepartures = efaFetcher.getStationDepartures(25000341);
+        List<Departure> stationDepartures = efaFetcher.getStationDepartures(25000341).stream()
+                .filter(departure -> departure.getLine() < 100).collect(toList());
         stationDepartures.addAll(efaFetcher.getStationDepartures(25002091));
 
         return stationDepartures.stream()

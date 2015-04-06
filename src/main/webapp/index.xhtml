@@ -15,7 +15,7 @@
                 <p:clock pattern="dd.MM.yyyy HH:mm:ss"/>
             </p:column>
             <p:column rowspan="2">
-                <h5>Abfahrten</h5>
+                <h3>Abfahrten</h3>
                 <p:dataTable value="#{efaView.departures}" var="departure" rows="11">
                     <p:column headerText="Linie" style="width: 5em">
                         <h:graphicImage library="efaIcons" name="#{departure.icon}"
@@ -46,7 +46,7 @@
                                 <td>
                                     <h:outputText value="#{departure.delay}" rendered="#{departure.delay gt 0}"
                                                   styleClass="departureDelay">
-                                        <f:convertNumber pattern="+#"/>
+                                        <f:convertNumber pattern="(+#)"/>
                                     </h:outputText>
                                 </td>
                             </tr>
@@ -57,7 +57,7 @@
         </p:row>
         <p:row>
             <p:column>
-                <h5>Aktuelles Wetter</h5>
+                <h3>Aktuelles Wetter</h3>
                 <p:panelGrid styleClass="noBorder">
                     <p:row>
                         <p:column rowspan="4">
@@ -105,7 +105,7 @@
                     </p:row>
                 </p:panelGrid>
 
-                <h5>Vorhersage</h5>
+                <h3>Vorhersage</h3>
                 <p:chart type="line" model="#{weatherBean.forecastModel}"/>
             </p:column>
         </p:row>
