@@ -16,97 +16,111 @@
             </p:column>
             <p:column rowspan="2">
                 <h3>Abfahrten</h3>
-                <p:dataTable value="#{efaView.departures}" var="departure" rows="11">
-                    <p:column headerText="Linie" style="width: 5em">
-                        <h:graphicImage library="efaIcons" name="#{departure.icon}"
-                                        style="vertical-align: middle; margin-right: 0.3em"/>
-                        <h:outputText value="#{departure.line}"/>
-                    </p:column>
-                    <p:column headerText="Station">
-                        <h:outputText value="#{departure.station}"/>
-                    </p:column>
-                    <p:column headerText="Ziel">
-                        <h:outputText value="#{departure.direction}"/>
-                    </p:column>
-                    <p:column headerText="Zeit" style="width: 5em">
-                        <table class="countdownDisplay">
-                            <tr>
-                                <td class="departureTime">
-                                    <h:outputText value="#{departure.time}">
-                                        <f:convertDateTime pattern="HH:mm"/>
-                                    </h:outputText>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h:outputText value="#{departure.countdown}" styleClass="departureCountdown">
-                                        <f:convertNumber pattern="# min"/>
-                                    </h:outputText>
-                                </td>
-                                <td>
-                                    <h:outputText value="#{departure.delay}" rendered="#{departure.delay gt 0}"
-                                                  styleClass="departureDelay">
-                                        <f:convertNumber pattern="(+#)"/>
-                                    </h:outputText>
-                                </td>
-                            </tr>
-                        </table>
-                    </p:column>
-                </p:dataTable>
+                <h:form>
+                    <p:poll interval="30" update="departueTable"/>
+
+                    <p:dataTable id="departueTable" value="#{efaView.departures}" var="departure" rows="11">
+                        <p:column headerText="Linie" style="width: 5em">
+                            <h:graphicImage library="efaIcons" name="#{departure.icon}"
+                                            style="vertical-align: middle; margin-right: 0.3em"/>
+                            <h:outputText value="#{departure.line}"/>
+                        </p:column>
+                        <p:column headerText="Station">
+                            <h:outputText value="#{departure.station}"/>
+                        </p:column>
+                        <p:column headerText="Ziel">
+                            <h:outputText value="#{departure.direction}"/>
+                        </p:column>
+                        <p:column headerText="Zeit" style="width: 5em">
+                            <table class="countdownDisplay">
+                                <tr>
+                                    <td class="departureTime">
+                                        <h:outputText value="#{departure.time}">
+                                            <f:convertDateTime pattern="HH:mm"/>
+                                        </h:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{departure.countdown}" styleClass="departureCountdown" rendered="#{departure.countdown gt 0}">
+                                            <f:convertNumber pattern="# min"/>
+                                        </h:outputText>
+                                        <h:outputText value="jetzt" styleClass="departureCountdown"
+                                                      rendered="#{departure.countdown eq 0}"/>
+                                    </td>
+                                    <td>
+                                        <h:outputText value="#{departure.delay}" rendered="#{departure.delay gt 0}"
+                                                      styleClass="departureDelay">
+                                            <f:convertNumber pattern="(+#)"/>
+                                        </h:outputText>
+                                    </td>
+                                </tr>
+                            </table>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </p:column>
         </p:row>
         <p:row>
             <p:column>
                 <h3>Aktuelles Wetter</h3>
-                <p:panelGrid styleClass="noBorder">
-                    <p:row>
-                        <p:column rowspan="4">
-                            <!--<h:graphicImage url="#{weatherBean.iconUrl}"/>-->
-                            <h:graphicImage library="weatherIcons" name="#{weatherBean.icon}.png"/>
-                        </p:column>
-                        <p:column>
-                            <h:outputText id="tempField" value="#{weatherBean.temperatureInCelsius}">
-                                <f:convertNumber pattern="#°C"/>
-                            </h:outputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputText id="pressureField" value="#{weatherBean.pressure}">
-                                <f:convertNumber pattern="#hPa"/>
-                            </h:outputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputText id="humidityField" value="#{weatherBean.humidity}">
-                                <f:convertNumber pattern="#%"/>
-                            </h:outputText>
-                            <h:outputLabel id="humidityLabel" for="humidityField">
-                                Luftfeuchtigkeit
-                            </h:outputLabel>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputText value="#{weatherBean.wind.speed}">
-                                <f:convertNumber pattern="#km/h"/>
-                            </h:outputText>
-                            /
-                            <h:outputText value="#{weatherBean.wind.deg}">
-                                <f:convertNumber pattern="#°"/>
-                            </h:outputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="2">
-                            <h:outputText value="#{weatherBean.conditionString}"/>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+                <h:form id="weatherForm">
+                    <p:poll interval="#{30*60}" update="weatherPanel"/>
+
+                    <p:panelGrid id="weatherPanel" styleClass="noBorder">
+                        <p:row>
+                            <p:column rowspan="4">
+                                <!--<h:graphicImage url="#{weatherBean.iconUrl}"/>-->
+                                <h:graphicImage library="weatherIcons" name="#{weatherBean.icon}.png"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="tempField" value="#{weatherBean.temperatureInCelsius}">
+                                    <f:convertNumber pattern="#°C"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText id="pressureField" value="#{weatherBean.pressure}">
+                                    <f:convertNumber pattern="#hPa"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText id="humidityField" value="#{weatherBean.humidity}">
+                                    <f:convertNumber pattern="#%"/>
+                                </h:outputText>
+                                <h:outputLabel id="humidityLabel" for="humidityField">
+                                    Luftfeuchtigkeit
+                                </h:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="#{weatherBean.wind.speed}">
+                                    <f:convertNumber pattern="#km/h"/>
+                                </h:outputText>
+                                /
+                                <h:outputText value="#{weatherBean.wind.deg}">
+                                    <f:convertNumber pattern="#°"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <h:outputText value="#{weatherBean.conditionString}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
 
                 <h3>Vorhersage</h3>
-                <p:chart type="line" model="#{weatherBean.forecastModel}"/>
+                <h:form id="forecastForm">
+                    <p:poll interval="#{30*60}" update="forecastChart"/>
+
+                    <p:chart id="forecastChart" type="line" model="#{weatherBean.forecastModel}"/>
+                </h:form>
             </p:column>
         </p:row>
     </p:panelGrid>
