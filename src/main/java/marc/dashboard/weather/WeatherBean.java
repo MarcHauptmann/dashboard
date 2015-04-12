@@ -14,6 +14,7 @@ import javax.inject.Named;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -24,7 +25,7 @@ import static java.util.stream.Collectors.toMap;
 @RequestScoped
 public class WeatherBean {
     public static final double KELVIN_DIFFERENCE = 273.15;
-    public static final int FORECAST_POINTS = 8;
+    public static final int FORECAST_POINTS = 12;
 
     @Inject
     Configuration configuration;
@@ -125,6 +126,9 @@ public class WeatherBean {
         forecastModel.setShowDatatip(false);
         forecastModel.setMouseoverHighlight(false);
         forecastModel.setShowPointLabels(false);
+
+        Axis y2Axis = forecastModel.getAxis(AxisType.Y2);
+        y2Axis.setMin(0);
 
         return forecastModel;
     }

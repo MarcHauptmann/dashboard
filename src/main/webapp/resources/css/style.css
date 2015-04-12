@@ -33,3 +33,28 @@
     padding: 0 !important;
     font-size: 80%;
 }
+
+.ui-clock {
+    font-size: 180% !important;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.tempField {
+    font-size: 162%;
+    font-weight: bolder;
+}
+
+.hpa {
+    font-size: 87%;
+    margin-left: 0.15em;
+}
+
+.kmh {
+    font-size: 87%;
+    margin-left: 0.15em;
+}
