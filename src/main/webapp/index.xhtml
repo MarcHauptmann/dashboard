@@ -12,7 +12,7 @@
     <p:panelGrid styleClass="noBorder" style="width: 100%">
         <p:row>
             <p:column style="width: 50%">
-                <p:clock pattern="dd.MM.yyyy HH:mm:ss" />
+                <p:clock pattern="dd.MM.yyyy HH:mm:ss" mode="server" autoSync="true"/>
             </p:column>
             <p:column rowspan="3">
                 <h3>Abfahrten</h3>
@@ -31,7 +31,7 @@
                         <p:column headerText="Station">
                             <h:outputText value="#{departure.station}"/>
                         </p:column>
-                        <p:column headerText="Zeit" style="width: 5em">
+                        <p:column headerText="Zeit" style="width: 7em">
                             <table class="countdownDisplay">
                                 <tr>
                                     <td class="departureTime">
