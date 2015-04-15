@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.Date;
 
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class Departure {
     int line;
@@ -59,7 +60,10 @@ public class Departure {
     }
 
     public int getCountdown(Date date) {
-        return max(getDifferenceInMinutes(realTime, date), 0);
+        Date realTime = this.realTime;
+
+        return max(max(getDifferenceInMinutes(realTime, date), 0),
+                   max(getDifferenceInMinutes(time, date), 0));
     }
 
     public String getIcon() {
@@ -81,5 +85,9 @@ public class Departure {
         long delayMs = realTime.getTime() - time.getTime();
 
         return (int) Math.round(delayMs / 60000.);
+    }
+
+    public Date getRealTime() {
+        return realTime;
     }
 }
