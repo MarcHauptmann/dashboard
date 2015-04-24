@@ -78,7 +78,9 @@ public class Departure {
     }
 
     public int getDelay() {
-        return getDifferenceInMinutes(realTime, time);
+        long delayMs = realTime.getTime() - time.getTime();
+
+        return (int) Math.floor(delayMs / 60000.);
     }
 
     private int getDifferenceInMinutes(Date realTime, Date time) {

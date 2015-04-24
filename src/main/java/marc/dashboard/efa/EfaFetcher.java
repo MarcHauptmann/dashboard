@@ -71,10 +71,8 @@ public class EfaFetcher {
 
         Date realtimeDate = dep.getRealtimeDateTime().getDate();
 
-
-
         return new Departure(dep.getServingLine().getNumber(), dep.getStationName(), dep.getServingLine().getDirection(),
-                realtimeDate, plannedDepartureTime);
+                plannedDepartureTime, realtimeDate);
     }
 
     public static void main(String[] args) throws IOException, JAXBException {

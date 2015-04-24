@@ -98,7 +98,7 @@
                                 <h:outputText id="pressureField" value="#{weatherBean.pressure}">
                                     <f:convertNumber pattern="#"/>
                                 </h:outputText>
-                                <h:outputText value="hpa" styleClass="hpa"/>
+                                <h:outputText value="hpa" styleClass="unit"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -109,19 +109,21 @@
                                 <h:outputText value="#{weatherBean.wind.speed}">
                                     <f:convertNumber pattern="#"/>
                                 </h:outputText>
-                                <h:outputText styleClass="kmh" value="km/h"/>
+                                <h:outputText styleClass="unit" value="km/h"/>
                                 /
                                 <h:outputText value="#{weatherBean.wind.deg}">
-                                    <f:convertNumber pattern="#°"/>
+                                    <f:convertNumber pattern="#"/>
                                 </h:outputText>
+                                <h:outputLabel styleClass="unit" value="°"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column></p:column>
                             <p:column>
                                 <h:outputText id="humidityField" value="#{weatherBean.humidity}">
-                                    <f:convertNumber pattern="#%"/>
+                                    <f:convertNumber pattern="#"/>
                                 </h:outputText>
+                                <h:outputText styleClass="unit" value="%"/>
                                 <h:outputLabel id="humidityLabel" for="humidityField">
                                     Luftfeuchtigkeit
                                 </h:outputLabel>

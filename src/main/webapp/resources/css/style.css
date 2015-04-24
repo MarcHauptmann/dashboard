@@ -49,12 +49,8 @@
     font-weight: bolder;
 }
 
-.hpa {
-    font-size: 87%;
-    margin-left: 0.15em;
-}
+.unit {
+    font-size: 90%;
 
-.kmh {
-    font-size: 87%;
     margin-left: 0.15em;
 }
