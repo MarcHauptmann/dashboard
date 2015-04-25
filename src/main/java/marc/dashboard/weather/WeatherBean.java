@@ -9,6 +9,7 @@ import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.text.DateFormat;
@@ -30,22 +31,17 @@ public class WeatherBean {
     @Inject
     Configuration configuration;
 
+    @Inject
+    OpenWeatherApi api;
+
     private WeatherData weatherData;
 
     private Forecast forecast;
 
     @PostConstruct
     public void initialize() {
-        ResteasyClient resteasyClient = new ResteasyClientBuilder().build();
-
-        ResteasyWebTarget target = resteasyClient.target("http://api.openweathermap.org/data/2.5");
-
-        OpenWeatherApi api = target.proxy(OpenWeatherApi.class);
-
         weatherData = api.getWeather(configuration.getPlace(), "de");
         forecast = api.getForecast(configuration.getPlace(), "de");
-
-        resteasyClient.close();
     }
 
     public double getTemperatureInCelsius() {
@@ -107,8 +103,9 @@ public class WeatherBean {
 
         if (returnValue == null) {
             return "dunno";
-        } else
+        } else {
             return returnValue;
+        }
     }
 
     private Optional<WeatherCondition> getWeather() {

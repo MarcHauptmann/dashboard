@@ -14,13 +14,14 @@ public class EfaView {
     @Inject
     private Configuration configuration;
 
+    @Inject
+    EfaFetcher efaFetcher;
+
     public List<String> getStations() {
         return configuration.getStations();
     }
 
     public List<Departure> getDepartures() {
-        EfaFetcher efaFetcher = new EfaFetcher();
-
         List<Long> stationIds = configuration.getStations().stream()
                 .map(name -> getFirstStationByName(efaFetcher, name).getId())
                 .collect(toList());
