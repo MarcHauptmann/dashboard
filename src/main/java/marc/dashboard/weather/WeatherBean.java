@@ -1,8 +1,10 @@
 package marc.dashboard.weather;
 
+import marc.dashboard.cdi.Primary;
 import org.primefaces.model.chart.*;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
@@ -14,6 +16,7 @@ import static java.util.stream.Collectors.toMap;
 public class WeatherBean {
 
     @Inject
+    @Primary
     private WeatherService weatherService;
 
     public double getTemperatureInCelsius() {
