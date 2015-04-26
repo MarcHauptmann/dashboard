@@ -1,7 +1,6 @@
-package marc.dashboard.weather.api;
+package marc.dashboard.weather.openweathermap;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;

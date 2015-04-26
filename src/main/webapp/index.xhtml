@@ -71,7 +71,6 @@
                     <p:panelGrid id="weatherPanel" styleClass="noBorder">
                         <p:row>
                             <p:column rowspan="5">
-                                <!--<h:graphicImage url="#{weatherBean.iconUrl}"/>-->
                                 <h:graphicImage library="weatherIcons" name="#{weatherBean.icon}.png"/>
                             </p:column>
                             <p:column>
@@ -106,12 +105,12 @@
                                 <h:graphicImage library="hawcons" name="icon-43-wind.png" styleClass="icon"/>
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{weatherBean.wind.speed}">
+                                <h:outputText value="#{weatherBean.windSpeed}">
                                     <f:convertNumber pattern="#"/>
                                 </h:outputText>
                                 <h:outputText styleClass="unit" value="km/h"/>
                                 /
-                                <h:outputText value="#{weatherBean.wind.deg}">
+                                <h:outputText value="#{weatherBean.windDirection}">
                                     <f:convertNumber pattern="#"/>
                                 </h:outputText>
                                 <h:outputText styleClass="unit" value="°"/>

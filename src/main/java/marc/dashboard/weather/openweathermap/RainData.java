@@ -1,4 +1,4 @@
-package marc.dashboard.weather.api;
+package marc.dashboard.weather.openweathermap;
 
 import javax.xml.bind.annotation.XmlElement;
 

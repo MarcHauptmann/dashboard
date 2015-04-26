@@ -1,10 +1,10 @@
-package marc.dashboard.weather.api;
+package marc.dashboard.weather.openweathermap;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
-public interface OpenWeatherApi {
+public interface OpenWeatherMapApi {
 
     @Path("weather")
     @GET

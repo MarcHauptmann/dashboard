@@ -1,4 +1,4 @@
-package marc.dashboard.weather.api;
+package marc.dashboard.weather.openweathermap;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
