@@ -24,14 +24,13 @@ import static java.lang.Math.*;
 @RequestScoped
 @Primary
 public class WUndergroundWeatherService implements WeatherService {
-    private WUndergroundApi api;
 
     @Inject
     private Configuration configuration;
 
     private Observation observation;
     private List<Forecast> forecasts;
-    private AstronomicData astronomicData;
+    private SunPhase sunPhase;
 
     @Inject
     @AppConfig(key = "wunderground.api.key")
@@ -43,11 +42,15 @@ public class WUndergroundWeatherService implements WeatherService {
 
         ResteasyWebTarget target = client.target("http://api.wunderground.com/api/").path(apiKey);
 
-        api = target.proxy(WUndergroundApi.class);
+        WUndergroundApi api = target.proxy(WUndergroundApi.class);
 
-        observation = api.getConditions("Germany", configuration.getPlace()).getObservation();
-        forecasts = api.getHourlyForcast("Germany", configuration.getPlace()).getForecasts();
-        astronomicData = api.getAstronomicData("Germany", configuration.getPlace());
+        WUndergroundResponse wUndergroundResponse = api.getData("Germany", configuration.getPlace());
+
+        observation = wUndergroundResponse.getObservation();
+        forecasts = wUndergroundResponse.getForecasts();
+        sunPhase = wUndergroundResponse.getSunPhase();
+
+        client.close();
     }
 
     @Override
@@ -123,8 +126,6 @@ public class WUndergroundWeatherService implements WeatherService {
 
     public String decorateNight(String icon) {
         LocalTime now = LocalTime.now();
-        ;
-        SunPhase sunPhase = astronomicData.getSunPhase();
 
         if (now.isBefore(sunPhase.getSunrise()) || now.isAfter(sunPhase.getSunset())) {
             return icon + "_night";
@@ -141,11 +142,11 @@ public class WUndergroundWeatherService implements WeatherService {
 
     @Override
     public Map<Object, Number> getRainForecast() {
-        return forecasts.stream().collect(Collectors.toMap(this::toDate, forecast -> forecast.getRain()));
+        return forecasts.stream().collect(Collectors.toMap(this::toDate, Forecast::getRain));
     }
 
     @Override
     public Map<Object, Number> getTemparatureForecast() {
-        return forecasts.stream().collect(Collectors.toMap(this::toDate, forecast -> forecast.getTemperature()));
+        return forecasts.stream().collect(Collectors.toMap(this::toDate, Forecast::getTemperature));
     }
 }
