@@ -7,10 +7,11 @@ import marc.dashboard.weather.WeatherService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Math.*;
 
-@RequestScoped
+@ApplicationScoped
 @Primary
 public class WUndergroundWeatherService implements WeatherService {
 
@@ -36,21 +37,29 @@ public class WUndergroundWeatherService implements WeatherService {
     @AppConfig(key = "wunderground.api.key")
     String apiKey;
 
+    private WUndergroundApi api;
+
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @PostConstruct
     public void initialize() {
         ResteasyClient client = new ResteasyClientBuilder().build();
 
         ResteasyWebTarget target = client.target("http://api.wunderground.com/api/").path(apiKey);
 
-        WUndergroundApi api = target.proxy(WUndergroundApi.class);
+        api = target.proxy(WUndergroundApi.class);
+
+        updateWeatherData();
+    }
+
+    void updateWeatherData() {
+        logger.info("updating weather data");
 
         WUndergroundResponse wUndergroundResponse = api.getData("Germany", configuration.getPlace());
 
         observation = wUndergroundResponse.getObservation();
         forecasts = wUndergroundResponse.getForecasts();
         sunPhase = wUndergroundResponse.getSunPhase();
-
-        client.close();
     }
 
     @Override
