@@ -1,6 +1,7 @@
 package marc.dashboard.weather;
 
 import marc.dashboard.cdi.Primary;
+import marc.dashboard.weather.wunderground.WUndergroundWeatherService;
 import org.primefaces.model.chart.*;
 
 import javax.enterprise.context.RequestScoped;
@@ -9,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 @Named
@@ -47,54 +49,19 @@ public class WeatherBean {
         return weatherService.getCurrentIcon();
     }
 
-    public CartesianChartModel getForecastModel() {
-        LineChartModel forecastModel = new LineChartModel();
-        forecastModel.addSeries(createRainSeries());
-        forecastModel.addSeries(createTemperatureSeries());
+    public List<WUndergroundWeatherService.DateDoublePair> getRainData() {
+        Map<Date, Double> rainForecast = weatherService.getRainForecast();
 
-        forecastModel.getAxes().put(AxisType.X, createDateAxis());
-        forecastModel.getAxes().put(AxisType.Y, new LinearAxis("Temperatur/°C"));
-        forecastModel.getAxes().put(AxisType.Y2, new LinearAxis("Niederschlag/mm"));
-        forecastModel.setShowDatatip(false);
-        forecastModel.setMouseoverHighlight(false);
-        forecastModel.setShowPointLabels(false);
-
-        Axis y2Axis = forecastModel.getAxis(AxisType.Y2);
-        y2Axis.setMin(0);
-
-        return forecastModel;
+        return rainForecast.keySet().stream()
+                .map(date -> new WUndergroundWeatherService.DateDoublePair(date, rainForecast.get(date)))
+                .sorted((o1, o2) -> o1.getDate().compareTo(o2.getDate())).collect(toList());
     }
 
-    private DateAxis createDateAxis() {
-        DateAxis axis = new DateAxis();
-        axis.setTickAngle(-50);
-        axis.setTickFormat("%H:%M");
-        return axis;
-    }
+    public List<WUndergroundWeatherService.DateDoublePair> getTemperatureData() {
+        Map<Date, Double> temparatureForecast = weatherService.getTemparatureForecast();
 
-    private ChartSeries createRainSeries() {
-        LineChartSeries rainSeries = new LineChartSeries();
-        rainSeries.setLabel("Niederschlag");
-
-        Map<Object, Number> rainData = weatherService.getRainForecast();
-
-        rainSeries.setData(rainData);
-        rainSeries.setXaxis(AxisType.X);
-        rainSeries.setYaxis(AxisType.Y2);
-
-        return rainSeries;
-    }
-
-    private ChartSeries createTemperatureSeries() {
-        LineChartSeries temperatureSeries = new LineChartSeries();
-        temperatureSeries.setLabel("Temperatur");
-
-        Map<Object, Number> temperatures = weatherService.getTemparatureForecast();
-
-        temperatureSeries.setData(temperatures);
-        temperatureSeries.setXaxis(AxisType.X);
-        temperatureSeries.setYaxis(AxisType.Y);
-
-        return temperatureSeries;
+        return temparatureForecast.keySet().stream()
+                .map(date -> new WUndergroundWeatherService.DateDoublePair(date, temparatureForecast.get(date)))
+                .sorted((o1, o2) -> o1.getDate().compareTo(o2.getDate())).collect(toList());
     }
 }

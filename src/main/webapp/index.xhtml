@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui" xmlns:b="http://java.sun.com/jsf/html">
 <h:head> </h:head>
 <h:body>
     <h:outputStylesheet library="css" name="style.css"/>
@@ -74,7 +75,8 @@
                                 <h:graphicImage library="weatherIcons" name="#{weatherBean.icon}.png"/>
                             </p:column>
                             <p:column>
-                                <h:graphicImage library="hawcons" name="icon-69-thermometer-half.png" styleClass="icon"/>
+                                <h:graphicImage library="hawcons" name="icon-69-thermometer-half.png"
+                                                styleClass="icon"/>
                             </p:column>
                             <p:column>
                                 <h:outputText id="tempField" styleClass="tempField"
@@ -135,9 +137,94 @@
             <p:column>
                 <h3>Vorhersage</h3>
                 <h:form id="forecastForm">
-                    <p:poll interval="#{30*60}" update="forecastChart"/>
+                    <h:outputScript library="js" name="highcharts.js"/>
 
-                    <p:chart id="forecastChart" type="line" model="#{weatherBean.forecastModel}"/>
+                    <p:poll interval="1" update="forecastPanel"/>
+
+                    <p:panel id="forecastPanel">
+
+                        <script type="text/javascript">
+                            $(function () {
+                                Highcharts.setOptions({
+                                    lang: {
+                                        months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli',
+                                            'August', 'September', 'Oktober', 'November', 'Dezember'],
+                                        shortMonths: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+                                        weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+                                    }
+                                });
+
+                                $('#forcastChart').highcharts({
+                                    chart: {
+                                        animation: false,
+                                        type: 'line'
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    title: {
+                                        text: ''
+                                    },
+                                    xAxis: {
+                                        type: 'datetime',
+                                        title: {
+                                            text: 'Zeit'
+                                        },
+                                        dateTimeLabelFormats: {
+                                        	day: '%A',
+                                        }
+                                    },
+                                    yAxis: [{
+                                        title: {
+                                            text: 'Temperatur/°C'
+                                        },
+                                        maxPadding: 0.0
+                                    }, {
+                                        title: {
+                                            text: 'Niederschlag/mm'
+                                        },
+                                        opposite: true
+                                    }],
+                                    series: [{
+                                        type: 'areaspline',
+                                        color: '#F0C000',
+                                        fillOpacity: 0.3,
+                                        zIndex: 2,
+                                        marker: {
+                                            enabled: false
+                                        },
+                                        data: [
+                                            <c:forEach items="${weatherBean.temperatureData}" var="pair" varStatus="status">
+                                                [${pair.date.time}, ${pair.value}]
+                                                <c:if test="${!status.last}">,</c:if>
+                                            </c:forEach>
+                                        ]
+                                    },
+                                    {
+                                        type: 'column',
+                                        color: '#7cb5ec',
+                                        zIndex: 1,
+                                        yAxis: 1,
+                                        groupPadding: 0,
+                                        pointPadding: 0,
+                                        data: [
+                                            <c:forEach items="${weatherBean.rainData}" var="pair" varStatus="status">
+                                                [${pair.date.time}, ${pair.value}]
+                                                <c:if test="${!status.last}">,</c:if>
+                                            </c:forEach>
+                                        ]
+                                    }],
+                                    plotOptions: {
+                                        series: {
+                                            animation: false
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+                        <div id="forcastChart"></div>
+                    </p:panel>
                 </h:form>
             </p:column>
         </p:row>

@@ -1,5 +1,6 @@
 package marc.dashboard.weather;
 
+import java.util.Date;
 import java.util.Map;
 
 public interface WeatherService {
@@ -17,7 +18,7 @@ public interface WeatherService {
 
     String getCurrentIcon();
 
-    Map<Object, Number> getRainForecast();
+    Map<Date, Double> getRainForecast();
 
-    Map<Object, Number> getTemparatureForecast();
+    Map<Date, Double> getTemparatureForecast();
 }

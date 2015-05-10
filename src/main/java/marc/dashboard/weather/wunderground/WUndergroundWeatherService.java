@@ -147,18 +147,12 @@ public class WUndergroundWeatherService implements WeatherService {
         }
     }
 
-    private String toDate(Forecast forecast) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        return dateFormat.format(forecast.getTime());
-    }
-
     @Override
-    public Map<Object, Number> getRainForecast() {
-        return forecasts.stream().collect(Collectors.toMap(this::toDate, Forecast::getRain));
+    public Map<Date, Double> getRainForecast() {
+        return forecasts.stream().collect(Collectors.toMap(Forecast::getTime, Forecast::getRain));
     }
 
-    static class DateDoublePair {
+    public static class DateDoublePair {
         Date date;
         double value;
 
@@ -181,7 +175,7 @@ public class WUndergroundWeatherService implements WeatherService {
     }
 
     @Override
-    public Map<Object, Number> getTemparatureForecast() {
+    public Map<Date, Double> getTemparatureForecast() {
         List<DateDoublePair> list = new ArrayList<>();
 
         for (int i = 0; i < forecasts.size(); i++) {
@@ -197,6 +191,6 @@ public class WUndergroundWeatherService implements WeatherService {
         }
 
         return list.stream()
-                .collect(Collectors.toMap(DateDoublePair::getDateAsString, DateDoublePair::getValue));
+                .collect(Collectors.toMap(DateDoublePair::getDate, DateDoublePair::getValue));
     }
 }

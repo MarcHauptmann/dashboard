@@ -8,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -105,12 +106,6 @@ public class OpenWeatherMapService implements WeatherService {
         }
     }
 
-    private String toDate(ForecastData forecastData) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        return dateFormat.format(forecastData.getDate());
-    }
-
     private double toRain(ForecastData forecastData) {
         return forecastData.getRainData().getAmount3h();
     }
@@ -120,16 +115,16 @@ public class OpenWeatherMapService implements WeatherService {
     }
 
     @Override
-    public Map<Object, Number> getRainForecast() {
+    public Map<Date, Double> getRainForecast() {
         return forecast.getData().stream()
                 .limit(FORECAST_POINTS)
-                .collect(toMap(this::toDate, this::toRain));
+                .collect(toMap(ForecastData::getDate, this::toRain));
     }
 
     @Override
-    public Map<Object, Number> getTemparatureForecast() {
+    public Map<Date, Double> getTemparatureForecast() {
         return forecast.getData().stream()
                 .limit(FORECAST_POINTS)
-                .collect(toMap(this::toDate, this::toTemperature));
+                .collect(toMap(ForecastData::getDate, this::toTemperature));
     }
 }
