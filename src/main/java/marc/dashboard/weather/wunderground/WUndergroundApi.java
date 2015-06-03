@@ -9,12 +9,12 @@ import javax.ws.rs.PathParam;
 public interface WUndergroundApi {
 
     @GET
-    @Path("conditions/lang:DL/q/{country}/{city}.json")
+    @Path("conditions/q/{country}/{city}.json")
     ConditionsResponse getConditions(@PathParam("country") String country, @PathParam("city") String city);
 
 
     @GET
-    @Path("hourly/lang:DL/q/{country}/{city}.json")
+    @Path("hourly/q/{country}/{city}.json")
     ForecaseResponse getHourlyForcast(@PathParam("country") String country, @PathParam("city") String city);
 
     @GET

@@ -49,7 +49,9 @@ public class WUndergroundWeatherService implements WeatherService {
     public void initialize() {
         ResteasyClient client = new ResteasyClientBuilder().build();
 
-        ResteasyWebTarget target = client.target("http://api.wunderground.com/api/").path(apiKey);
+        ResteasyWebTarget target = client.target("http://api.wunderground.com/api/")
+                .path(apiKey)
+                .path("lang:DL");
 
         api = target.proxy(WUndergroundApi.class);
 

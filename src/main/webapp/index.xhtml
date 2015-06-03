@@ -139,7 +139,7 @@
                 <h:form id="forecastForm">
                     <h:outputScript library="js" name="highcharts.js"/>
 
-                    <p:poll interval="1" update="forecastPanel"/>
+                    <p:poll interval="#{30*60}" update="forecastPanel"/>
 
                     <p:panel id="forecastPanel">
 
