@@ -4,10 +4,6 @@ import marc.dashboard.config.Configuration;
 import marc.dashboard.weather.WeatherService;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,15 +11,15 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toMap;
 
-@RequestScoped
+//@RequestScoped
 public class OpenWeatherMapService implements WeatherService {
     public static final double KELVIN_DIFFERENCE = 273.15;
     public static final int FORECAST_POINTS = 12;
 
-    @Inject
+//    @Inject
     marc.dashboard.weather.openweathermap.OpenWeatherMapApi api;
 
-    @Inject
+//    @Inject
     Configuration configuration;
 
     WeatherData weatherData;

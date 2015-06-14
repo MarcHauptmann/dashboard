@@ -1,13 +1,12 @@
 package marc.dashboard.config;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * Bean to hold the configuration
  */
-@ApplicationScoped
+//@ApplicationScoped
 public class DefaultConfiguration implements Configuration, Serializable {
     private ConfigurationBean configurationBean = new ConfigurationBean();
 

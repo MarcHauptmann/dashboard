@@ -1,17 +1,11 @@
 package marc.dashboard.efa;
 
 import marc.dashboard.efa.api.*;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +14,9 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static javax.xml.bind.JAXBContext.newInstance;
 
-@ApplicationScoped
 public class EfaFetcher {
 
-    @Inject
+    @Autowired
     private EfaService efaService;
 
     public List<Station> getStations(String city, String station) {
@@ -65,7 +58,8 @@ public class EfaFetcher {
 
         Date realtimeDate = dep.getRealtimeDateTime().getDate();
 
-        return new Departure(dep.getServingLine().getNumber(), dep.getStationName(), dep.getServingLine().getDirection(),
+        return new Departure(dep.getServingLine().getNumber(), dep.getStationName(), dep.getServingLine()
+                .getDirection(),
                 plannedDepartureTime, realtimeDate);
     }
 }

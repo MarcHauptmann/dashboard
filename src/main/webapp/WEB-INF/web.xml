@@ -6,32 +6,18 @@
         version="3.0">
     <display-name>Archetype Created Web Application</display-name>
 
-    <listener>
-        <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-    </listener>
-
-    <welcome-file-list>
-        <welcome-file>index.xhtml</welcome-file>
-    </welcome-file-list>
-
     <servlet>
-        <servlet-name>faces</servlet-name>
-        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <servlet-name>dashboard</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:/spring-config.xml</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <context-param>
-        <param-name>primefaces.THEME</param-name>
-        <param-value>bootstrap</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
-        <param-value>true</param-value>
-    </context-param>
-
     <servlet-mapping>
-        <servlet-name>faces</servlet-name>
-        <url-pattern>*.xhtml</url-pattern>
+        <servlet-name>dashboard</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -1,15 +1,18 @@
 package marc.dashboard.config;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class ConfigurationBean implements Serializable {
+public class ConfigurationBean implements Configuration, Serializable {
     String place = "Hannover";
     List<String> stations = Arrays.asList("Isernhagener Str.", "Vahrenwalder Platz");
 
     public ConfigurationBean() {
     }
 
+    @Override
     public String getPlace() {
         return place;
     }
@@ -18,6 +21,7 @@ public class ConfigurationBean implements Serializable {
         this.place = place;
     }
 
+    @Override
     public List<String> getStations() {
         return stations;
     }

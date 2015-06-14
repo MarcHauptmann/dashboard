@@ -3,26 +3,23 @@ package marc.dashboard.config;
 import marc.dashboard.efa.EfaFetcher;
 
 import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@Named
-@ViewScoped
+//@Named
+//@ViewScoped
 public class ConfigurationView implements Serializable {
     private ConfigurationBean configurationBean;
 
     private String selectedStation;
     private String newStation;
 
-    @Inject
+//    @Inject
     private DefaultConfiguration configuration;
 
-    @Inject
+//    @Inject
     private MessagePublisher messagePublisher;
 
     public ConfigurationView() {

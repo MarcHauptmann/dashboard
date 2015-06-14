@@ -55,3 +55,29 @@
     margin-left: 0.15em;
     margin-right: 0.2em;
 }
+
+.weather-value {
+    display: block;
+}
+
+.value-field {
+    display: inline;
+}
+
+#currentWeather {
+    /*border: 1px solid black;*/
+    /*float: left;*/
+    display: block;
+    width: 50%;
+}
+
+#weatherChart {
+    /*border: 1px solid black;*/
+    /*float: left;*/
+    width: 50%;
+    display: block;
+}
+
+#weatherIcon {
+    float: left;
+}

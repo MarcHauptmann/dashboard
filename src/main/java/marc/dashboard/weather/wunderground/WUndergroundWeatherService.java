@@ -1,7 +1,6 @@
 package marc.dashboard.weather.wunderground;
 
 import marc.dashboard.cdi.AppConfig;
-import marc.dashboard.cdi.Primary;
 import marc.dashboard.config.Configuration;
 import marc.dashboard.weather.WeatherService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -9,11 +8,11 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -25,20 +24,19 @@ import java.util.stream.Collectors;
 import static java.lang.Math.*;
 import static java.util.stream.Collectors.averagingDouble;
 
-@ApplicationScoped
-@Primary
+
 public class WUndergroundWeatherService implements WeatherService {
 
     public static final int WINDOW_SIZE = 2;
-    @Inject
+
+    @Autowired
     private Configuration configuration;
 
     private Observation observation;
     private List<Forecast> forecasts;
     private SunPhase sunPhase;
 
-    @Inject
-    @AppConfig(key = "wunderground.api.key")
+    @Value("${wunderground.api.key}")
     String apiKey;
 
     private WUndergroundApi api;
@@ -58,6 +56,7 @@ public class WUndergroundWeatherService implements WeatherService {
         updateWeatherData();
     }
 
+    @Scheduled(fixedDelay = 30 * 60 * 1000)
     void updateWeatherData() {
         logger.info("updating weather data");
 

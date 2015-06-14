@@ -1,26 +1,31 @@
 package marc.dashboard.efa;
 
 import marc.dashboard.config.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@Named
-public class EfaView {
-    @Inject
+@Controller
+@RequestMapping("/efa")
+public class EfaController {
+    @Autowired
     private Configuration configuration;
 
-    @Inject
+    @Autowired
     EfaFetcher efaFetcher;
 
     public List<String> getStations() {
         return configuration.getStations();
     }
 
+    @RequestMapping(value = "departures", method = RequestMethod.GET)
+    @ResponseBody
     public List<Departure> getDepartures() {
         List<Long> stationIds = configuration.getStations().stream()
                 .map(name -> getFirstStationByName(efaFetcher, name).getId())

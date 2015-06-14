@@ -5,10 +5,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
-import javax.enterprise.inject.Produces;
-
 public class EfaServiceFactory {
-    @Produces
+//    @Produces
     public static EfaService createEfaService() {
         ResteasyClient resteasyClient = new ResteasyClientBuilder().build();
 
