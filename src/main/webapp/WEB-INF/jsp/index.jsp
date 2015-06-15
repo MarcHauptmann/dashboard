@@ -17,7 +17,7 @@
     <script src="${highchartsUrl}"></script>
 
     <script type="application/javascript">
-        $(function () {
+        function initChart(chartContainer) {
             Highcharts.setOptions({
                 lang: {
                     months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli',
@@ -27,7 +27,7 @@
                 }
             });
 
-            var chart = $('#weatherChart').highcharts({
+            chartContainer.highcharts({
                 chart: {
                     animation: false,
                     type: 'line'
@@ -82,51 +82,114 @@
                         animation: false
                     }
                 }
-            }).highcharts();
+            });
+        }
 
-            $.getJSON("weather/temperature", function (response) {
-                var data = [];
+        function pollJSON(url, handler, interval) {
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "json",
+                timeout: 3000,
+                success: handler,
+                complete: setTimeout(function () {
+                    pollJSON(url, handler, interval);
+                }, interval)
+            });
+        }
 
-                $.each(response, function (v) {
-                    data.push([response[v].date, response[v].value]);
-                });
+        function updateCurrentWeather(weather) {
+            console.log("updating current weather");
 
-                chart.series[0].setData(data);
+            $("#currentTemperature").text(Math.round(weather.temperature));
+            $("#currentHumidity").text(Math.round(weather.humidity));
+            $("#currentWindSpeed").text(Math.round(weather.windSpeed));
+            $("#currentWindDirection").text(Math.round(weather.windDirection));
+            $("#currentDescription").text(weather.description);
+            $("#currentIcon").attr("src", "resources/weatherIcons/" + weather.icon + ".png");
+        }
+
+        function updateDepartures(response) {
+            console.log("updating departures");
+
+            var tableBody = $("#departureTable tbody");
+
+            tableBody.empty();
+
+            function lineIconImage(line) {
+                if (line < 100) {
+                    return $("<img>").attr("src", "resources/efaIcons/u_bahn.gif");
+                } else {
+                    return $("<img>").attr("src", "resources/efaIcons/bus.gif");
+                }
+            }
+
+            function getDelay(delay) {
+                if (delay > 0) {
+                    return "(+" + delay + ")";
+                } else {
+                    return "";
+                }
+            }
+
+            function formatCountdown(countdown) {
+                if (countdown == 0) {
+                    return "jetzt";
+                } else {
+                    return countdown + " min";
+                }
+            }
+
+            $.each($(response).slice(0, 16), function (index, departure) {
+                tableBody.append($("<tr>")
+                                .append($("<td>").append(lineIconImage(departure.line)))
+                                .append($("<td>").text(departure.line))
+                                .append($("<td>").text(departure.direction))
+                                .append($("<td>").text(departure.station))
+                                .append($("<td>").text(formatCountdown(departure.countdown)))
+                                .append($("<td>").text(getDelay(departure.delay)))
+                );
+            });
+        }
+
+        function updateTemperatureChart(response) {
+            console.log("updating temperature data");
+
+            var chart = $("#weatherChart").highcharts();
+            var data = [];
+
+            $.each(response, function (index, dataPoint) {
+                data.push([dataPoint.date, dataPoint.value]);
             });
 
-            $.getJSON("weather/rain", function (response) {
-                var data = [];
+            chart.series[0].setData(data);
+        }
 
-                $.each(response, function (v) {
-                    data.push([response[v].date, response[v].value]);
-                });
+        function updateRainChart(response) {
+            console.log("updating rain data");
 
-                chart.series[1].setData(data);
+            var chart = $("#weatherChart").highcharts();
+            var data = [];
+
+            $.each(response, function (index, dataPoint) {
+                data.push([dataPoint.date, dataPoint.value]);
             });
 
-            $.getJSON("weather/current", function (response) {
-                $("#currentTemperature").text(Math.round(response.temperature));
-                $("#currentHumidity").text(Math.round(response.humidity));
-                $("#currentWindSpeed").text(Math.round(response.windSpeed));
-                $("#currentWindDirection").text(Math.round(response.windDirection));
-                $("#currentDescription").text(response.description);
-                $("#currentIcon").attr("src", "resources/weatherIcons/" + response.icon + ".png");
-            });
+            chart.series[1].setData(data);
+        }
 
-            $.getJSON("efa/departures", function (response) {
-                var tableBody = $("#departureTable tbody");
+        $(function () {
+            var chartContainer = $('#weatherChart');
 
-                tableBody.empty();
+            initChart(chartContainer);
 
-                $.each($(response).slice(0,18), function (i, departure) {
-                    tableBody.append($("<tr>")
-                                    .append($("<td>").text(departure.line))
-                                    .append($("<td>").text(departure.direction))
-                                    .append($("<td>").text(departure.station))
-                                    .append($("<td>").text(departure.countdown))
-                    );
-                });
-            });
+            var MINUTES = 60 * 1000;
+
+            pollJSON("weather/current", updateCurrentWeather, 15 * MINUTES);
+            pollJSON("weather/temperature", updateTemperatureChart, 15 * MINUTES);
+            pollJSON("weather/rain", updateRainChart, 15 * MINUTES);
+
+            pollJSON("efa/departures", updateDepartures, 20 * 1000);
         });
     </script>
 <head>
@@ -191,17 +254,19 @@
                 <div class="panel-body">
                     <table id="departureTable" class="table table-condensed" style="width: 100%;">
                         <colgroup>
+                            <col width="5%"/>
+                            <col width="5%"/>
+                            <col width="45%"/>
+                            <col width="30%"/>
                             <col width="10%"/>
-                            <col width="40%"/>
-                            <col width="40%"/>
-                            <col width="10%"/>
+                            <col width="5%"/>
                         </colgroup>
                         <thead>
                         <tr>
-                            <th>Linie</th>
+                            <th colspan="2">Linie</th>
                             <th>Richtung</th>
                             <th>Station</th>
-                            <th>Zeit</th>
+                            <th colspan="2">Zeit</th>
                         </tr>
                         </thead>
                         <tbody>
