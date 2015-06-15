@@ -140,15 +140,32 @@
                 }
             }
 
+            function formatTime(millis) {
+                const date = new Date(millis);
+
+                function twoDigits(num) {
+                    if (num < 10)
+                        return "0" + num;
+                    else
+                        return num;
+                }
+
+                return twoDigits(date.getHours()) + ":" + twoDigits(date.getMinutes());
+            }
+
             $.each($(response).slice(0, 16), function (index, departure) {
+
                 tableBody.append($("<tr>")
-                                .append($("<td>").append(lineIconImage(departure.line)))
-                                .append($("<td>").text(departure.line))
-                                .append($("<td>").text(departure.direction))
-                                .append($("<td>").text(departure.station))
-                                .append($("<td>").text(formatCountdown(departure.countdown)))
-                                .append($("<td>").text(getDelay(departure.delay)))
-                );
+                        .append($("<td>").append(lineIconImage(departure.line)))
+                        .append($("<td>").text(departure.line))
+                        .append($("<td>").text(departure.direction))
+                        .append($("<td>").text(departure.station))
+                        .append($("<td>").addClass("departureTime")
+                                .text(formatTime(departure.realTime)))
+                        .append($("<td>").addClass("departureCountdown")
+                                .text(formatCountdown(departure.countdown)))
+                        .append($("<td>").addClass("departureDelay")
+                                .text(getDelay(departure.delay))));
             });
         }
 
@@ -226,7 +243,7 @@
                     </div>
 
                     <div class="weather-value">
-                        <label for="currentWind">Luftfeuchtigkeit:</label>
+                        <label for="currentWind">Wind:</label>
 
                         <div id="currentWind" class="value-field">
                             <span id="currentWindSpeed"></span>
@@ -256,17 +273,18 @@
                         <colgroup>
                             <col width="5%"/>
                             <col width="5%"/>
-                            <col width="45%"/>
+                            <col width="40%"/>
                             <col width="30%"/>
-                            <col width="10%"/>
-                            <col width="5%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <col width="6%"/>
                         </colgroup>
                         <thead>
                         <tr>
                             <th colspan="2">Linie</th>
                             <th>Richtung</th>
                             <th>Station</th>
-                            <th colspan="2">Zeit</th>
+                            <th colspan="3">Zeit</th>
                         </tr>
                         </thead>
                         <tbody>
