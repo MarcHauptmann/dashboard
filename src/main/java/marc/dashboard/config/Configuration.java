@@ -5,5 +5,5 @@ import java.util.List;
 public interface Configuration {
     String getPlace();
 
-    List<String> getStations();
+    List<StationDefinition> getStationDefinitions();
 }

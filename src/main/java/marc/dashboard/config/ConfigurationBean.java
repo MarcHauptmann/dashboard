@@ -2,15 +2,11 @@ package marc.dashboard.config;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ConfigurationBean implements Configuration, Serializable {
-    String place = "Hannover";
-    List<String> stations = Arrays.asList("Isernhagener Str.", "Vahrenwalder Platz");
-
-    public ConfigurationBean() {
-    }
+    private String place;
+    private List<StationDefinition> stationDefinitions;
 
     @Override
     public String getPlace() {
@@ -22,27 +18,27 @@ public class ConfigurationBean implements Configuration, Serializable {
     }
 
     @Override
-    public List<String> getStations() {
-        return stations;
+    public List<StationDefinition> getStationDefinitions() {
+        return stationDefinitions;
     }
 
-    public void setStations(List<String> stations) {
-        this.stations = stations;
+    public void setStationDefinitions(List<StationDefinition> stations) {
+        this.stationDefinitions = stations;
     }
 
     public ConfigurationBean clone() {
         ConfigurationBean configurationBean = new ConfigurationBean();
         configurationBean.setPlace(place);
-        configurationBean.setStations(new ArrayList<>(stations));
+        configurationBean.setStationDefinitions(new ArrayList<>(stationDefinitions));
 
         return configurationBean;
     }
 
-    public void addStation(String newStation) {
-        this.stations.add(newStation);
+    public void addStationDefinition(StationDefinition newStation) {
+        this.stationDefinitions.add(newStation);
     }
 
     public void removeStation(String selectedStation) {
-        this.stations.remove(selectedStation);
+        this.stationDefinitions.remove(selectedStation);
     }
 }

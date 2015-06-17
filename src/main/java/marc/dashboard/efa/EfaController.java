@@ -1,12 +1,15 @@
 package marc.dashboard.efa;
 
 import marc.dashboard.config.Configuration;
+import marc.dashboard.config.StationDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -18,27 +21,31 @@ public class EfaController {
     private Configuration configuration;
 
     @Autowired
-    EfaFetcher efaFetcher;
-
-    public List<String> getStations() {
-        return configuration.getStations();
-    }
+    private EfaFetcher efaFetcher;
 
     @RequestMapping(value = "departures", method = RequestMethod.GET)
     @ResponseBody
     public List<Departure> getDepartures() {
-        List<Long> stationIds = configuration.getStations().stream()
-                .map(name -> getFirstStationByName(efaFetcher, name).getId())
-                .collect(toList());
-
-        return stationIds.stream()
-                .map(efaFetcher::getStationDepartures)
-                .flatMap(list -> list.stream())
-                .sorted((dep1, dep2) -> dep1.getTime().compareTo(dep2.getTime()))
+        return configuration.getStationDefinitions().stream()
+                .map(this::toDepartures)
+                .flatMap(Collection::stream)
+                .sorted(byDepartureTime())
                 .collect(toList());
     }
 
-    private Station getFirstStationByName(EfaFetcher efaFetcher, String name) {
+    private List<Departure> toDepartures(StationDefinition def) {
+        Station station = getFirstStationByName(def.getStationName());
+
+        return efaFetcher.getStationDepartures(station.getId()).stream()
+                .filter(departure -> def.getLinePredicate().test(departure.getLine()))
+                .collect(toList());
+    }
+
+    private Comparator<Departure> byDepartureTime() {
+        return (dep1, dep2) -> dep1.getTime().compareTo(dep2.getTime());
+    }
+
+    private Station getFirstStationByName(String name) {
         return efaFetcher.getStations(configuration.getPlace(), name).stream().findFirst().get();
     }
 }

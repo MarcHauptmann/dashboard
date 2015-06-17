@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,12 @@ public class EfaFetcher {
 
         StopResponse stopResponse = readObjectFromStream(StopResponse.class, inputStream);
 
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Stream<Station> stationStream = stopResponse.getFinder().getName().getOdvName().getNames().stream()
                 .filter(odvNameElement1 -> odvNameElement1.getAnyType() == Type.stop)
                 .map(odvNameElement -> new Station(odvNameElement.getId(), odvNameElement.getLocality(),
@@ -36,6 +43,12 @@ public class EfaFetcher {
         InputStream inputStream = efaService.getDepartures(new DepartureQuery(stationId));
 
         DepartureResponse departureResponse = readObjectFromStream(DepartureResponse.class, inputStream);
+
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return departureResponse.getDepartureInfo().getDepartures().stream()
                 .map((dep) -> getStationDeparture(dep))
