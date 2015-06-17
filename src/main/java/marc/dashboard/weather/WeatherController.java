@@ -28,7 +28,7 @@ public class WeatherController {
         conditions.setIcon(weatherService.getCurrentIcon());
         conditions.setHumidity(weatherService.getCurrentHumidity());
         conditions.setWindSpeed(weatherService.getCurrentWindSpeed());
-        conditions.setWindDirection(weatherService.getCurrentWindSpeed());
+        conditions.setWindDirection(weatherService.getCurrentWindDirection());
         conditions.setDescription(weatherService.getCurrentConditionString());
 
         return conditions;
