@@ -1,6 +1,5 @@
 package marc.dashboard.weather.wunderground;
 
-import marc.dashboard.cdi.AppConfig;
 import marc.dashboard.config.Configuration;
 import marc.dashboard.weather.WeatherService;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -28,6 +27,7 @@ import static java.util.stream.Collectors.averagingDouble;
 public class WUndergroundWeatherService implements WeatherService {
 
     public static final int WINDOW_SIZE = 2;
+    public static final int UPDATE_INTERVAL = 30 * 60 * 1000;
 
     @Autowired
     private Configuration configuration;
@@ -52,11 +52,9 @@ public class WUndergroundWeatherService implements WeatherService {
                 .path("lang:DL");
 
         api = target.proxy(WUndergroundApi.class);
-
-        updateWeatherData();
     }
 
-    @Scheduled(fixedDelay = 30 * 60 * 1000)
+    @Scheduled(fixedDelay = UPDATE_INTERVAL)
     void updateWeatherData() {
         logger.info("updating weather data");
 
