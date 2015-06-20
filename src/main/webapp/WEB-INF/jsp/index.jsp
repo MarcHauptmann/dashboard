@@ -9,6 +9,9 @@
     <spring:url value="/resources/js/highcharts.js" var="highchartsUrl"/>
     <spring:url value="/resources/css/style.css" var="cssUrl"/>
     <spring:url value="/resources/css/bootstrap.min.css" var="bootstrapUrl"/>
+    <spring:url value="/resources/hawcons/icon-69-thermometer-half.png" var="thermometerIconUrl"/>
+    <spring:url value="/resources/hawcons/icon-43-wind.png" var="windIconUrl"/>
+    <spring:url value="/resources/hawcons/icon-52-barometer.png" var="pressureIconUrl"/>
 
     <link rel="stylesheet" href="${cssUrl}">
     <link rel="stylesheet" href="${bootstrapUrl}">
@@ -101,12 +104,13 @@
         function updateCurrentWeather(weather) {
             console.log("updating current weather");
 
-            $("#currentTemperature").text(Math.round(weather.temperature));
-            $("#currentHumidity").text(Math.round(weather.humidity));
-            $("#currentWindSpeed").text(Math.round(weather.windSpeed));
-            $("#currentWindDirection").text(Math.round(weather.windDirection));
-            $("#currentDescription").text(weather.description);
-            $("#currentIcon").attr("src", "resources/weatherIcons/" + weather.icon + ".png");
+            $("#currentWeather-temperature").text(Math.round(weather.temperature));
+            $("#currentWeather-humidity").text(Math.round(weather.humidity));
+            $("#currentWeather-windSpeed").text(Math.round(weather.windSpeed));
+            $("#currentWeather-pressure").text(Math.round(weather.pressure));
+            $("#currentWeather-windDirection").text(Math.round(weather.windDirection));
+            $("#currentWeather-description").text(weather.description);
+            $("#currentWeather-icon").attr("src", "resources/weatherIcons/" + weather.icon + ".png");
         }
 
         function updateDepartures(response) {
@@ -219,37 +223,52 @@
                 <div class="panel-heading">Aktuelles Wetter</div>
                 <div class="panel-body">
                     <div id="weatherIcon">
-                        <img id="currentIcon" src="resources/weatherIcons/dunno.png">
+                        <img id="currentWeather-icon" src="resources/weatherIcons/dunno.png">
 
-                        <div id="currentDescription"></div>
+                        <div id="currentWeather-description"></div>
                     </div>
 
-                    <div class="weather-value">
-                        <label for="currentTemperature">Temperatur:</label>
+                    <div class="weather-value temperature">
+                        <img src="${thermometerIconUrl}"/>
+
+                        <label for="currentWeather-temperature">Temperatur:</label>
 
                         <div class="value-field">
-                            <span id="currentTemperature"></span>
+                            <span id="currentWeather-temperature"></span>
                             <span class="unit">°C</span>
                         </div>
                     </div>
 
-                    <div class="weather-value">
-                        <label for="currentHumidity">Luftfeuchtigkeit:</label>
+                    <div class="weather-value pressure">
+                        <img src="${pressureIconUrl}"/>
+
+                        <label for="currentWeather-pressure">Druck:</label>
 
                         <div class="value-field">
-                            <span id="currentHumidity"></span>
-                            <span class="unit">%</span>
+                            <span id="currentWeather-pressure"></span>
+                            <span class="unit">hpa</span>
                         </div>
                     </div>
 
-                    <div class="weather-value">
+                    <div class="weather-value wind">
+                        <img src="${windIconUrl}"/>
+
                         <label for="currentWind">Wind:</label>
 
                         <div id="currentWind" class="value-field">
-                            <span id="currentWindSpeed"></span>
+                            <span id="currentWeather-windSpeed"></span>
                             <span class="unit">km/h</span> /
-                            <span id="currentWindDirection"></span>
+                            <span id="currentWeather-windDirection"></span>
                             <span class="unit">°</span>
+                        </div>
+                    </div>
+
+                    <div class="weather-value humidity">
+                        <label for="currentWeather-humidity">Luftfeuchtigkeit:</label>
+
+                        <div class="value-field">
+                            <span id="currentWeather-humidity"></span>
+                            <span class="unit">%</span>
                         </div>
                     </div>
                 </div>

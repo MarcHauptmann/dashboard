@@ -50,10 +50,6 @@
 }
 
 .unit {
-    font-size: 90%;
-
-    margin-left: 0.15em;
-    margin-right: 0.2em;
 }
 
 .weather-value {
@@ -64,20 +60,45 @@
     display: inline;
 }
 
+.weather-value.temperature {
+    font-size: 300%;
+}
+
+.weather-value.temperature label {
+    display: none;
+}
+
+.weather-value.pressure label {
+    display: none;
+}
+
+.weather-value.pressure img {
+    height: 1.5em;
+}
+
+.weather-value.wind label {
+    display: none;
+}
+
+.weather-value.wind img {
+    height: 1.5em;
+}
+
+#currentWeather-description {
+    display: none;
+}
+
 #currentWeather {
-    /*border: 1px solid black;*/
-    /*float: left;*/
     display: block;
     width: 50%;
 }
 
 #weatherChart {
-    /*border: 1px solid black;*/
-    /*float: left;*/
     width: 50%;
     display: block;
 }
 
 #weatherIcon {
     float: left;
+    margin-right: 2em;
 }

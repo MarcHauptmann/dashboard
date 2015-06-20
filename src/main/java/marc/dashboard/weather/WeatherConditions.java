@@ -5,6 +5,7 @@ public class WeatherConditions {
     private double humidity;
     private double windDirection;
     private double windSpeed;
+    private double pressure;
     private String icon;
     private String description;
 
@@ -54,5 +55,13 @@ public class WeatherConditions {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public double getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
     }
 }

@@ -30,6 +30,7 @@ public class WeatherController {
         conditions.setWindSpeed(weatherService.getCurrentWindSpeed());
         conditions.setWindDirection(weatherService.getCurrentWindDirection());
         conditions.setDescription(weatherService.getCurrentConditionString());
+        conditions.setPressure(weatherService.getCurrentPressure());
 
         return conditions;
     }
