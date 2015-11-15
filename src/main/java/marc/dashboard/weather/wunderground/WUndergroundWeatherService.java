@@ -1,10 +1,8 @@
 package marc.dashboard.weather.wunderground;
 
+import marc.dashboard.RestUtil;
 import marc.dashboard.config.Configuration;
 import marc.dashboard.weather.WeatherService;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +43,9 @@ public class WUndergroundWeatherService implements WeatherService {
 
     @PostConstruct
     public void initialize() {
-        ResteasyClient client = new ResteasyClientBuilder().build();
+        String url = String.format("http://api.wunderground.com/api/%s/%s", apiKey, "lang:DL");
 
-        ResteasyWebTarget target = client.target("http://api.wunderground.com/api/")
-                .path(apiKey)
-                .path("lang:DL");
-
-        api = target.proxy(WUndergroundApi.class);
+        api = RestUtil.createService(url, WUndergroundApi.class);
     }
 
     @Scheduled(fixedDelay = UPDATE_INTERVAL)

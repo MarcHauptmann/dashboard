@@ -1,8 +1,9 @@
 package marc.dashboard.efa;
 
+import marc.dashboard.RestUtil;
 import marc.dashboard.efa.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -17,8 +18,15 @@ import static javax.xml.bind.JAXBContext.newInstance;
 
 public class EfaFetcher {
 
-    @Autowired
-    private EfaService efaService;
+    private static EfaService efaService;
+
+    @PostConstruct
+    public void createEfaService() {
+        String url = "http://mobil.efa.de/mobile3";
+        Class<EfaService> serviceClass = EfaService.class;
+
+        efaService = RestUtil.createService(url, serviceClass);
+    }
 
     public List<Station> getStations(String city, String station) {
         InputStream inputStream = efaService.findStation(new StationQuery(city, station));

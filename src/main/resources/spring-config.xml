@@ -63,7 +63,5 @@
     <bean class="marc.dashboard.weather.wunderground.WUndergroundWeatherService"/>
 
     <!-- EFA -->
-    <bean id="efaService" class="marc.dashboard.efa.EfaServiceFactory" factory-method="createEfaService"/>
-
     <bean class="marc.dashboard.efa.EfaFetcher"/>
 </beans>
