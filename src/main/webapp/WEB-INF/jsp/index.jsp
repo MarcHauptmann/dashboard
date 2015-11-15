@@ -199,6 +199,27 @@
             chart.series[1].setData(data);
         }
 
+        function updateClock() {
+            function formatNumber(num) {
+                if (num <= 9)
+                    return "0" + num;
+                else
+                    return num;
+            }
+
+            var now = new Date();
+            var hour = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            $("#clock").empty();
+            $("#clock").append($("<span>").addClass("hour").text(formatNumber(hour)))
+                    .append($("<span>").addClass("minuteColon").text(":"))
+                    .append($("<span>").addClass("minute").text(formatNumber(minutes)))
+                    .append($("<span>").addClass("secondsColon").text(":"))
+                    .append($("<span>").addClass("seconds").text(formatNumber(seconds)));
+        }
+
         $(function () {
             var chartContainer = $('#weatherChart');
 
@@ -211,64 +232,81 @@
             pollJSON("weather/rain", updateRainChart, 15 * MINUTES);
 
             pollJSON("efa/departures", updateDepartures, 20 * 1000);
+
+            setInterval(updateClock, 250);
         });
     </script>
-<head>
+    <head>
 <body>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">
-            <div id="currentWeather" class="panel panel-default clearfix" style="width: 100%;">
-                <div class="panel-heading">Aktuelles Wetter</div>
-                <div class="panel-body">
-                    <div id="weatherIcon">
-                        <img id="currentWeather-icon" src="resources/weatherIcons/dunno.png">
+            <div class="row">
+                <div class="col-md-7">
+                    <div id="currentWeather" class="panel panel-default">
+                        <div class="panel-heading">Aktuelles Wetter</div>
+                        <div class="panel-body">
+                            <div>
+                                <div id="weatherIcon">
+                                    <img id="currentWeather-icon" src="resources/weatherIcons/dunno.png">
 
-                        <div id="currentWeather-description"></div>
-                    </div>
+                                    <div id="currentWeather-description"></div>
+                                </div>
 
-                    <div class="weather-value temperature">
-                        <img src="${thermometerIconUrl}"/>
+                                <div class="weather-value temperature">
+                                    <img src="${thermometerIconUrl}"/>
 
-                        <label for="currentWeather-temperature">Temperatur:</label>
+                                    <label for="currentWeather-temperature">Temperatur:</label>
 
-                        <div class="value-field">
-                            <span id="currentWeather-temperature"></span>
-                            <span class="unit">°C</span>
+                                    <div class="value-field">
+                                        <span id="currentWeather-temperature"></span>
+                                        <span class="unit">°C</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="weather-value pressure">
+                                <img src="${pressureIconUrl}"/>
+
+                                <label for="currentWeather-pressure">Druck:</label>
+
+                                <div class="value-field">
+                                    <span id="currentWeather-pressure"></span>
+                                    <span class="unit">hpa</span>
+                                </div>
+                            </div>
+
+                            <div class="weather-value wind">
+                                <img src="${windIconUrl}"/>
+
+                                <label for="currentWind">Wind:</label>
+
+                                <div id="currentWind" class="value-field">
+                                    <span id="currentWeather-windSpeed"></span>
+                                    <span class="unit">km/h</span> /
+                                    <span id="currentWeather-windDirection"></span>
+                                    <span class="unit">°</span>
+                                </div>
+                            </div>
+
+                            <div class="weather-value humidity">
+                                <label for="currentWeather-humidity">Luftfeuchtigkeit:</label>
+
+                                <div class="value-field">
+                                    <span id="currentWeather-humidity"></span>
+                                    <span class="unit">%</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="weather-value pressure">
-                        <img src="${pressureIconUrl}"/>
-
-                        <label for="currentWeather-pressure">Druck:</label>
-
-                        <div class="value-field">
-                            <span id="currentWeather-pressure"></span>
-                            <span class="unit">hpa</span>
-                        </div>
-                    </div>
-
-                    <div class="weather-value wind">
-                        <img src="${windIconUrl}"/>
-
-                        <label for="currentWind">Wind:</label>
-
-                        <div id="currentWind" class="value-field">
-                            <span id="currentWeather-windSpeed"></span>
-                            <span class="unit">km/h</span> /
-                            <span id="currentWeather-windDirection"></span>
-                            <span class="unit">°</span>
-                        </div>
-                    </div>
-
-                    <div class="weather-value humidity">
-                        <label for="currentWeather-humidity">Luftfeuchtigkeit:</label>
-
-                        <div class="value-field">
-                            <span id="currentWeather-humidity"></span>
-                            <span class="unit">%</span>
+                <div class="col-md-5">
+                    <div id="clockPanel" class="panel panel-default">
+                        <div class="panel-heading">Uhrzeit</div>
+                        <div class="panel-body">
+                            <div id="clock"></div>
                         </div>
                     </div>
                 </div>
@@ -288,7 +326,7 @@
                     Nächste Abfahrten
                 </div>
                 <div class="panel-body">
-                    <table id="departureTable" class="table table-condensed" style="width: 100%;">
+                    <table id="departureTable" class="table table-condensed">
                         <colgroup>
                             <col width="5%"/>
                             <col width="5%"/>
