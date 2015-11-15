@@ -119,3 +119,17 @@
 #clock .secondsColon {
     display: none;
 }
+
+#todoList .time {
+    font-weight: bold;
+    padding-right: 0.5em;
+}
+
+#todoList .emptyList {
+    font-size: 500%;
+}
+
+#todoList .emptyList .text {
+    font-size: 30%;
+    vertical-align: middle;
+}

@@ -157,7 +157,7 @@
                 return twoDigits(date.getHours()) + ":" + twoDigits(date.getMinutes());
             }
 
-            $.each($(response).slice(0, 16), function (index, departure) {
+            $.each($(response).slice(0, 13), function (index, departure) {
 
                 tableBody.append($("<tr>")
                         .append($("<td>").append(lineIconImage(departure.line)))
@@ -200,13 +200,6 @@
         }
 
         function updateClock() {
-            function formatNumber(num) {
-                if (num <= 9)
-                    return "0" + num;
-                else
-                    return num;
-            }
-
             var now = new Date();
             var hour = now.getHours();
             var minutes = now.getMinutes();
@@ -218,6 +211,42 @@
                     .append($("<span>").addClass("minute").text(formatNumber(minutes)))
                     .append($("<span>").addClass("secondsColon").text(":"))
                     .append($("<span>").addClass("seconds").text(formatNumber(seconds)));
+        }
+
+        function updateTodo(response) {
+            var todoList = $("#todoList");
+
+            if (response.length > 0) {
+                var list = $("<ul>");
+
+                var table = $("<table>").addClass("table").addClass("table-condensed");
+
+                $.each(response, function (index, item) {
+                    var date = new Date(item.date);
+
+                    var dateString = formatNumber(date.getHours()) + ":" + formatNumber(date.getMinutes());
+
+                    table.append($("<row>")
+                            .append($("<td>").addClass("time").text(dateString))
+                            .append($("<td>").addClass("title").text(item.title)));
+                });
+
+                todoList.empty();
+                todoList.append(table);
+            } else {
+                todoList.empty();
+
+                todoList.append($("<div>").addClass("emptyList")
+                        .append($("<span>").text("☺").addClass("smiley"))
+                        .append($("<span>").text("nichts …").addClass("text")));
+            }
+        }
+
+        function formatNumber(num) {
+            if (num <= 9)
+                return "0" + num;
+            else
+                return num;
         }
 
         $(function () {
@@ -232,6 +261,8 @@
             pollJSON("weather/rain", updateRainChart, 15 * MINUTES);
 
             pollJSON("efa/departures", updateDepartures, 20 * 1000);
+
+            pollJSON("todo/today", updateTodo, 15 * MINUTES);
 
             setInterval(updateClock, 250);
         });
@@ -347,6 +378,15 @@
                         <tbody>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Heute zu erledigen
+                </div>
+                <div class="panel-body">
+                    <div id="todoList"></div>
                 </div>
             </div>
         </div>
