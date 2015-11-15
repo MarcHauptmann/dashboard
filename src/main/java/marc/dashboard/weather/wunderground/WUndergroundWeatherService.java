@@ -145,7 +145,7 @@ public class WUndergroundWeatherService implements WeatherService {
         return forecasts.stream().collect(Collectors.toMap(Forecast::getTime, Forecast::getRain));
     }
 
-    public static class DateDoublePair {
+    public static class DateDoublePair implements Comparable<DateDoublePair> {
         Date date;
         double value;
 
@@ -164,6 +164,11 @@ public class WUndergroundWeatherService implements WeatherService {
 
         public double getValue() {
             return value;
+        }
+
+        @Override
+        public int compareTo(DateDoublePair o) {
+            return date.compareTo(o.getDate());
         }
     }
 

@@ -52,7 +52,8 @@ public class WeatherController {
 
         return temparatureForecast.keySet().stream()
                 .map(date -> new WUndergroundWeatherService.DateDoublePair(date, temparatureForecast.get(date)))
-                .sorted((o1, o2) -> o1.getDate().compareTo(o2.getDate())).collect(toList());
+                .sorted()
+                .collect(toList());
     }
 
     public Map<Long, Double> getRainForecast() {
