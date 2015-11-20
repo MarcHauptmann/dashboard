@@ -14,15 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Optional;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -56,11 +52,12 @@ public class TodoController {
     }
 
     private boolean today(TodoItem item) {
-        LocalDateTime tomorrow = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(1);
+        LocalDateTime midnight = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
+        LocalDateTime tomorrow = midnight.plusDays(1);
 
         LocalDateTime eventTime = LocalDateTime.ofInstant(item.getDate().toInstant(), ZoneId.systemDefault());
 
-        return eventTime.isBefore(tomorrow);
+        return eventTime.isBefore(tomorrow) && eventTime.isAfter(midnight);
     }
 
     private Stream<TodoItem> toTodoStream(VEvent event) {
@@ -76,7 +73,7 @@ public class TodoController {
     }
 
     private Stream<TodoItem> toTodoItem(VEvent event) {
-        java.util.Date date = Date.from(event.getDateStart().getValue().toInstant());
+        Date date = Date.from(event.getDateStart().getValue().toInstant());
         String value = event.getSummary().getValue();
 
         return Stream.of(new TodoItem(date, value));
