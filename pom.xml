@@ -106,6 +106,8 @@
     <build>
         <finalName>dashboard</finalName>
 
+        <scriptSourceDirectory>src/main/js</scriptSourceDirectory>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -135,7 +137,7 @@
                 <version>1.4.1</version>
                 <executions>
                     <execution>
-                        <phase>generate-sources</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>npm</goal>
                             <goal>grunt</goal>

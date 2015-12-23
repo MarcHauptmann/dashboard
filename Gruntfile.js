@@ -1,4 +1,7 @@
 module.exports = function (grunt) {
+    var targetDir = "target/classes/js/";
+    var generatedSourcesDir = "target/generated-sources/js/";
+
     grunt.initConfig({
         uglify: {
             core: {
@@ -6,7 +9,7 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: 'src/main/js',
                     src: '**/*.js',
-                    dest: "target/classes/js/",
+                    dest: targetDir,
                     ext: '.js'
                 }]
             }
@@ -17,7 +20,7 @@ module.exports = function (grunt) {
             },
             libs: {
                 options: {
-                    destPrefix: "target/generated-sources/js"
+                    destPrefix: generatedSourcesDir
                 },
                 files: {
                     "jquery.js": "jquery/dist/jquery.min.js",
@@ -29,10 +32,19 @@ module.exports = function (grunt) {
             libs: {
                 files: [{
                     expand: true,
-                    cwd: "target/generated-sources/js/",
+                    cwd: generatedSourcesDir,
                     src: "**",
-                    dest: "target/classes/js/"
+                    dest: targetDir
                 }]
+            }
+        },
+        watch: {
+            scripts: {
+                files: ['**/*.js'],
+                tasks: ['uglify'],
+                options: {
+                    spawn: false
+                }
             }
         }
     });
@@ -40,6 +52,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-bowercopy');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', ['uglify', 'bowercopy', 'copy']);
 };
