@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat
 class DepartureTest extends Specification {
     def "calculating countdown"() {
         setup:
-        def departure = new Departure(100, "some station", "some direction", departureTime, realTime)
+        def departure = new Departure("100", "some station", "some direction", departureTime, realTime)
 
         expect:
         departure.getCountdown(time) == expectedCountdown
@@ -29,7 +29,7 @@ class DepartureTest extends Specification {
 
     def "calculating delay"() {
         setup:
-        def departure = new Departure(100, "some station", "some direction", plannedDepartureTime, realDepartureTime)
+        def departure = new Departure("100", "some station", "some direction", plannedDepartureTime, realDepartureTime)
 
         expect:
         departure.getDelay() == expectedDelay
