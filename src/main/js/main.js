@@ -98,12 +98,8 @@ function updateDepartures(response) {
 
     tableBody.empty();
 
-    function lineIconImage(line) {
-        if (line < 100) {
-            return $("<img>").attr("src", "resources/img/efaIcons/u_bahn.gif");
-        } else {
-            return $("<img>").attr("src", "resources/img/efaIcons/bus.gif");
-        }
+    function lineIconImage(icon) {
+        return $("<img>").attr("src", "resources/img/efaIcons/" + icon);
     }
 
     function getDelay(delay) {
@@ -136,10 +132,10 @@ function updateDepartures(response) {
         return twoDigits(date.getHours()) + ":" + twoDigits(date.getMinutes());
     }
 
-    $.each($(response).slice(0, 13), function (index, departure) {
+    $.each($(response).slice(0, 7), function (index, departure) {
 
         tableBody.append($("<tr>")
-            .append($("<td>").append(lineIconImage(departure.line)))
+            .append($("<td>").append(lineIconImage(departure.icon)))
             .append($("<td>").text(departure.line))
             .append($("<td>").text(departure.direction))
             .append($("<td>").text(departure.station))

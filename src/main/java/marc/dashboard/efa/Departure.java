@@ -4,17 +4,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 public class Departure {
-    int line;
+    String line;
     String direction;
     Date time;
     Date realTime;
     String station;
 
-    public Departure(int line, String station, String direction, Date time, Date realTime) {
+    public Departure(String line, String station, String direction, Date time, Date realTime) {
         this.line = line;
         this.direction = direction;
         this.time = time;
@@ -27,7 +26,7 @@ public class Departure {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    public void setLine(int line) {
+    public void setLine(String line) {
         this.line = line;
     }
 
@@ -43,7 +42,7 @@ public class Departure {
         this.station = station;
     }
 
-    public int getLine() {
+    public String getLine() {
         return line;
     }
 
@@ -63,14 +62,23 @@ public class Departure {
         Date realTime = this.realTime;
 
         return max(max(getDifferenceInMinutes(realTime, date), 0),
-                   max(getDifferenceInMinutes(time, date), 0));
+                max(getDifferenceInMinutes(time, date), 0));
     }
 
     public String getIcon() {
-        if (line < 100)
-            return "u_bahn.gif";
-        else
-            return "bus.gif";
+        if (line.matches("\\d+")) {
+            int lineNumber = Integer.parseInt(line);
+
+            if (lineNumber < 100) {
+                return "u_bahn.png";
+            } else {
+                return "bus.png";
+            }
+        } else if (line.matches("S\\d+")) {
+            return "s_bahn.png";
+        } else {
+            return null;
+        }
     }
 
     public String getStation() {

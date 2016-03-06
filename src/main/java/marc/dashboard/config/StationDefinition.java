@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 public class StationDefinition {
     String stationName;
-    Predicate<Integer> linePredicate;
+    Predicate<String> linePredicate;
 
     public String getStationName() {
         return stationName;
@@ -15,19 +15,19 @@ public class StationDefinition {
         this.stationName = stationName;
     }
 
-    public Predicate<Integer> getLinePredicate() {
+    public Predicate<String> getLinePredicate() {
         return linePredicate;
     }
 
-    public void setLinePredicate(Predicate<Integer> linePredicate) {
+    public void setLinePredicate(Predicate<String> linePredicate) {
         this.linePredicate = linePredicate;
     }
 
-    public static Predicate<Integer> allLinesBut(final Integer... lines) {
+    public static Predicate<String> allLinesBut(final String... lines) {
         return line -> !Arrays.asList(lines).contains(line);
     }
 
-    public static Predicate<Integer> allLines() {
+    public static Predicate<String> allLines() {
         return line -> true;
     }
 }

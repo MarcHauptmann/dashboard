@@ -35,26 +35,13 @@
 
     <!-- Config -->
     <bean class="marc.dashboard.config.ConfigurationBean">
-        <property name="place" value="Hannover"/>
+        <property name="place" value="Algermissen"/>
         <property name="stationDefinitions">
             <list>
                 <bean class="marc.dashboard.config.StationDefinition">
-                    <property name="stationName" value="Isernhagener Str."/>
+                    <property name="stationName" value="Bahnhof"/>
                     <property name="linePredicate">
                         <bean class="marc.dashboard.config.StationDefinition" factory-method="allLines"/>
-                    </property>
-                </bean>
-                <bean class="marc.dashboard.config.StationDefinition">
-                    <property name="stationName" value="Vahrenwalder Platz"/>
-                    <property name="linePredicate">
-                        <bean class="marc.dashboard.config.StationDefinition" factory-method="allLinesBut">
-                            <constructor-arg>
-                                <array>
-                                    <value>100</value>
-                                    <value>200</value>
-                                </array>
-                            </constructor-arg>
-                        </bean>
                     </property>
                 </bean>
             </list>

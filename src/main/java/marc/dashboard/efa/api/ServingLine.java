@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ServingLine {
 
     @XmlAttribute(name = "number")
-    int number;
+    String number;
 
     @XmlAttribute(name = "direction")
     String direction;
@@ -19,7 +19,7 @@ public class ServingLine {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
