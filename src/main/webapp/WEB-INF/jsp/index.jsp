@@ -14,15 +14,11 @@
     <link rel="stylesheet" href="${cssUrl}">
     <link rel="stylesheet" href="${bootstrapUrl}">
 
-    <script src="resources/js/jquery.js"></script>
-    <script src="resources/js/highcharts.js"></script>
     <script src="resources/js/main.js"></script>
 
     <script type="application/javascript">
         $(function () {
-            var chartContainer = $('#weatherChart');
-
-            initChart(chartContainer);
+            initChart("weatherChart");
 
             var MINUTES = 60 * 1000;
 
