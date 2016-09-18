@@ -5,11 +5,12 @@
 <head>
     <title>Dashboard</title>
 
-    <spring:url value="/resources/css/style.css" var="cssUrl"/>
-    <spring:url value="/resources/css/bootstrap.min.css" var="bootstrapUrl"/>
-    <spring:url value="/resources/img/hawcons/icon-69-thermometer-half.png" var="thermometerIconUrl"/>
-    <spring:url value="/resources/img/hawcons/icon-43-wind.png" var="windIconUrl"/>
-    <spring:url value="/resources/img/hawcons/icon-52-barometer.png" var="pressureIconUrl"/>
+
+    <spring:url value="resources/css/style.css" var="cssUrl"/>
+    <spring:url value="resources/css/bootstrap.min.css" var="bootstrapUrl"/>
+    <spring:url value="resources/img/hawcons/icon-69-thermometer-half.png" var="thermometerIconUrl"/>
+    <spring:url value="resources/img/hawcons/icon-43-wind.png" var="windIconUrl"/>
+    <spring:url value="resources/img/hawcons/icon-52-barometer.png" var="pressureIconUrl"/>
 
     <link rel="stylesheet" href="${cssUrl}">
     <link rel="stylesheet" href="${bootstrapUrl}">
