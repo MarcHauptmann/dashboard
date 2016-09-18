@@ -1,4 +1,4 @@
-var Highcharts = require("highcharts");
+import Highcharts from "highcharts";
 
 function initChart(chartContainer) {
     Highcharts.setOptions({
@@ -71,7 +71,7 @@ function initChart(chartContainer) {
 function updateTemperatureChart(response) {
     console.log("updating temperature data");
 
-    var chart = Highcharts.charts[0];
+    const chart = Highcharts.charts[0];
     var data = [];
 
     $.each(response, function (index, dataPoint) {
@@ -84,7 +84,7 @@ function updateTemperatureChart(response) {
 function updateRainChart(response) {
     console.log("updating rain data");
 
-    var chart = Highcharts.charts[0];
+    const chart = Highcharts.charts[0];
     var data = [];
 
     $.each(response, function (index, dataPoint) {

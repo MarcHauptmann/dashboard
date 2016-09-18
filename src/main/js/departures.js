@@ -1,4 +1,4 @@
-function updateDepartures(response) {
+export default function updateDepartures(response) {
     console.log("updating departures");
 
     var tableBody = $("#departureTable tbody");
@@ -54,5 +54,3 @@ function updateDepartures(response) {
                 .text(getDelay(departure.delay))));
     });
 }
-
-module.exports = updateDepartures;

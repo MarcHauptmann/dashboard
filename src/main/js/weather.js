@@ -1,4 +1,4 @@
-function updateCurrentWeather(weather) {
+export default function updateCurrentWeather(weather) {
     console.log("updating current weather");
 
     $("#currentWeather-temperature").text(Math.round(weather.temperature));
@@ -9,5 +9,3 @@ function updateCurrentWeather(weather) {
     $("#currentWeather-description").text(weather.description);
     $("#currentWeather-icon").attr("src", "resources/img/weatherIcons/" + weather.icon + ".png");
 }
-
-module.exports = updateCurrentWeather;

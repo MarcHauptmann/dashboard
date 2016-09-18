@@ -3,5 +3,13 @@ module.exports = {
     output: {
         path: "./target/classes/js",
         filename: "main.js"
-    }
+    },
+    module: {
+        loaders: [
+            {
+                test: /src\/main\/js\/.*\.js$/,
+                loader: 'babel-loader'
+            }
+        ]
+    },
 };

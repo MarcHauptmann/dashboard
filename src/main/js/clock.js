@@ -1,6 +1,6 @@
-var formatNumber = require("./string.js");
+import formatNumber from "./string.js";
 
-function updateClock() {
+export default function updateClock() {
     var now = new Date();
     var hour = now.getHours();
     var minutes = now.getMinutes();
@@ -13,5 +13,3 @@ function updateClock() {
         .append($("<span>").addClass("secondsColon").text(":"))
         .append($("<span>").addClass("seconds").text(formatNumber(seconds)));
 }
-
-module.exports = updateClock;

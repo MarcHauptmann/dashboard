@@ -1,9 +1,9 @@
-function updateTodo(response) {
+import formatNumber from "./string.js";
+
+export default function updateTodo(response) {
     var todoList = $("#todoList");
 
     if (response.length > 0) {
-        var list = $("<ul>");
-
         var table = $("<table>").addClass("table").addClass("table-condensed");
 
         $.each(response, function (index, item) {
@@ -26,5 +26,3 @@ function updateTodo(response) {
             .append($("<span>").text("nichts …").addClass("text")));
     }
 }
-
-module.exports = updateTodo;

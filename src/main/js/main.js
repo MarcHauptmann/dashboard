@@ -1,15 +1,22 @@
+import pollJSON from "./polling.js";
+import updateCurrentWeather from "./weather.js";
+import updateClock from "./clock";
+import {initChart, updateRainChart, updateTemperatureChart} from "./chart.js"
+import updateTodo from "./todo.js";
+import updateDepartures from "./departures.js";
+
 window.$ = require("jquery");
 
-window.pollJSON = require("./polling.js");
+window.pollJSON = pollJSON;
 
-window.initChart = require("./chart.js").initChart;
-window.updateRainChart  = require("./chart.js").updateRainChart;
-window.updateTemperatureChart = require("./chart.js").updateTemperatureChart;
+window.updateCurrentWeather = updateCurrentWeather;
 
-window.updateCurrentWeather = require("./weather.js");
+window.updateClock = updateClock;
 
-window.updateDepartures = require("./departures");
+window.initChart = initChart;
+window.updateRainChart = updateRainChart;
+window.updateTemperatureChart = updateTemperatureChart;
 
-window.updateClock = require("./clock.js");
+window.updateDepartures = updateDepartures;
 
-window.updateTodo = require("./todo.js");
+window.updateTodo = updateTodo;

@@ -142,6 +142,7 @@
                             <workingDirectory>${project.basedir}</workingDirectory>
                             <executable>${project.basedir}/node_modules/webpack/bin/webpack.js</executable>
                             <arguments>
+                                <argument>--optimize-minimize</argument>
                                 <argument>--color</argument>
                             </arguments>
                         </configuration>
